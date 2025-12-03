@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幸福久久（尊享版）终身寿险（分红型）利益演示表</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>window.injectInfo = { env: "PROD" };</script>
+    <script>window.publicPath = "https://gw.alipayobjects.com/render/p/yuyan/180023180006000310/";</script>
+    <script defer src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 占位符行样式 */
+        /* 占位符行样式 */
+        .placeholder-row {
+            background-color: #f9f9f9 !important;
+            color: #999 !important;
+            font-style: italic !important;
+        }
+
+        /* 表格容器 */
+        .table-container {
+            max-height: 600px;
+            overflow: auto;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        /* 表格 */
+        .result-table {
+            border-collapse: collapse;
+            table-layout: fixed;
+            width: 100%;
+            min-width: 800px;
+        }
+
+        /* 冻结表头 */
+        .result-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: #f8f9fa;
+            border-bottom: 2px solid #ddd;
+            font-weight: 600;
+        }
+
+        /* 冻结第一列 */
+        .result-table th:first-child,
+        .result-table td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 15;
+            background: #f8f9fa;
+            border-right: 2px solid #ddd;
+        }
+
+        /* 左上角单元格特殊处理 - 同时冻结行和列 */
+        .result-table thead th:first-child {
+            z-index: 25;
+            left: 0;
+            background: #e9ecef;
+        }
+
+        /* 基本样式 */
+        .result-table th, .result-table td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: right;
+            white-space: nowrap;
+            font-size: 12px;
+            min-width: 60px;
+        }
+
+        .result-table th:first-child,
+        .result-table td:first-child {
+            text-align: center;
+            min-width: 40px;
+        }
+
+        .result-table th:nth-child(2),
+        .result-table td:nth-child(2) {
+            text-align: center;
+            min-width: 40px;
+        }
+
+        .result-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .result-table tbody tr:hover {
+            background-color: #f0f7ff;
+        }
+
+        /* 确保冻结列在悬浮时也有背景色 */
+        .result-table tbody tr:hover td:first-child {
+            background-color: #e6f3ff;
+        }
+
+        /* 表格样式优化 */
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin: 0;
+            padding: 16px;
+            border-radius: 8px;
+        }
+        .premium-button {
+            transition: all 0.2s ease;
+        }
+        .premium-button:hover {
+            transform: scale(1.05);
+        }
+        .premium-button.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .payment-button {
+            transition: all 0.2s ease;
+        }
+        .payment-button:hover {
+            transform: scale(1.05);
+        }
+        .payment-button.active {
+            background-color: #10b981;
+            color: white;
+        }
+        .gender-button {
+            transition: all 0.2s ease;
+        }
+        .gender-button:hover {
+            transform: scale(1.05);
+        }
+        .gender-button.active {
+            background-color: #8b5cf6;
+            color: white;
+        }
+        input[type="range"] {
+            --track-color: rgba(0,0,0,0.1);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            background-color: #3b82f6;
+        }
+        input[type="range"]::-moz-range-thumb {
+            background-color: #3b82f6;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .data-source {
+            color: #22c55e;
+            margin-top: 10px;
+            font-size: 12px;
+            text-align: right;
+        }
+        /* 分享模态框样式 */
+        #shareModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .share-modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .share-url-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+        }
+        .copy-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        .copy-btn:hover {
+            background: #2563eb;
+        }
+        .qrcode-container {
+            width: 150px;
+            height: 150px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            border-radius: 4px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .modal-btn.primary {
+            background: #10b981;
+            color: white;
+        }
+        .modal-btn.secondary {
+            background: #6b7280;
+            color: white;
+        }
+        .modal-btn:hover {
+            opacity: 0.9;
+        }
+        /* 修改标题样式为两行居中 */
+        .page-title {
+            text-align: center;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+        .title-line-1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            display: block;
+        }
+        .title-line-2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            display: block;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container" class="container bg-white rounded-lg shadow-lg w-full" style="margin: 0px !important;">
+        <div class="p-4">
+            <!-- 修改标题为两行居中 -->
+            <h1 class="page-title">
+                <span class="title-line-1">幸福久久（尊享版）终身寿险（分红型）</span>
+                <span class="title-line-2">利益演示表</span>
+            </h1>
+            
+            <!-- 性别选择 -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <span class="material-icons text-sm mr-1">wc</span>性别
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                    <label class="gender-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer" data-gender="male" data-testid="gender-male">
+                        <input type="radio" name="gender" value="male" class="hidden">
+                        <span class="material-icons text-sm mr-1">man</span>男
+                    </label>
+                    <label class="gender-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer active" data-gender="female" data-testid="gender-female">
+                        <input type="radio" name="gender" value="female" class="hidden" checked>
+                        <span class="material-icons text-sm mr-1">woman</span>女
+                    </label>
+                </div>
+            </div>
+
+            <!-- 投保年龄 -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <span class="material-icons text-sm mr-1">person</span>投保年龄
+                </label>
+                <div class="flex items-center space-x-2">
+                    <input type="range" id="age" min="0" max="80" value="50" class="flex-1" data-testid="age-slider">
+                    <span id="ageValue" class="text-sm font-medium w-12 text-center">50岁</span>
+                </div>
+            </div>
+
+            <!-- 交费期间 -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <span class="material-icons text-sm mr-1">schedule</span>交费期间
+                </label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button class="payment-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-payment="3" data-testid="payment-3">
+                        3年
+                    </button>
+                    <button class="payment-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-payment="4" data-testid="payment-4">
+                        4年
+                    </button>
+                    <button class="payment-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all active" data-payment="5" data-testid="payment-5">
+                        5年
+                    </button>
+                    <button class="payment-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-payment="10" data-testid="payment-10">
+                        10年
+                    </button>
+                </div>
+            </div>
+
+            <!-- 年交保费 -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <span class="material-icons text-sm mr-1">payments</span>年交保费
+                </label>
+                
+                <!-- 快速选择按钮 -->
+                <div class="grid grid-cols-4 gap-2 mb-3">
+                    <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-premium="10000" data-testid="premium-10000">
+                        1万元
+                    </button>
+                    <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-premium="50000" data-testid="premium-50000">
+                        5万元
+                    </button>
+                    <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all active" data-premium="100000" data-testid="premium-100000">
+                        10万元
+                    </button>
+                    <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-premium="1000000" data-testid="premium-1000000">
+                        100万元
+                    </button>
+                </div>
+                
+                <!-- 自定义输入框 -->
+                <div class="flex items-center space-x-2">
+                    <input type="number" id="customPremium" placeholder="自定义年交保费" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="custom-premium">
+                    <span class="text-sm text-gray-600">元</span>
+                </div>
+            </div>
+
+            <!-- 计算按钮 -->
+            <div class="mb-6">
+                <button id="calculateBtn" class="w-full bg-blue-500 text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors" data-testid="calculate-btn">
+                    <span class="material-icons text-sm mr-1">calculate</span>计算利益
+                </button>
+            </div>
+
+            <!-- 加载动画 -->
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p class="text-gray-600 mt-2">正在加载真实数据，请勿刷新...</p>
+            </div>
+
+            <!-- 计算结果 -->
+            <div id="resultSection" class="hidden">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-bold text-gray-800">年度利益明细</h2>
+                    <span class="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">单位：元</span>
+                </div>
+    
+                <div class="mb-3 flex gap-2">
+                    <button id="exportBtn" class="flex-1 bg-green-500 text-white py-2 px-3 rounded-lg text-sm font-mediumbg-green-600 transition-colors">
+                        <span class="material-icons text-sm mr-1">download</span>导出Excel
+                    </button>
+                    <button id="shareBtn" class="flex-1 bg-green-600 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
+                        <span class="material-icons text-sm mr-1">share</span>微信分享
+                    </button>
+                </div>
+    
+                <div class="table-container">
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px;">年度</th>
+                                <th style="width: 30px;">年龄</th>
+                                <th style="width: 60px;">年度保费</th>
+                                <th style="width: 60px;">累计保费</th>
+                                <th style="width: 60px;">现金价值</th>
+                                <th style="width: 60px;">累计红利</th>
+                                <th style="width: 60px;">生存总利益</th>
+                                <th style="width: 50px;">当年收益率</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody">
+                            <!-- 数据将由JavaScript填充 -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="data-source">✅ 数据来源：全年龄段合并数据.json</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量：存储真实JSON数据
+        let insuranceDatabase = null;
+
+        // 1. 加载真实JSON数据
+        async function loadInsuranceData() {
+            try {
+                console.log("开始加载真实数据...");
+                const response = await fetch('index_files/全年龄段合并数据.json');
+                
+                if (!response.ok) {
+                    throw new Error(`数据文件未找到！请检查"index_files"文件夹是否与HTML同级，状态码: ${response.status}`);
+                }
+                
+                insuranceDatabase = await response.json();
+                console.log("✅ 真实数据加载成功！包含年龄节点：", Object.keys(insuranceDatabase).join(", "));
+                
+                return insuranceDatabase;
+            } catch (error) {
+                console.error("❌ 数据加载失败：", error.message);
+                alert("真实数据加载失败！错误：" + error.message + "\n请检查JSON文件路径和格式");
+                return null;
+            }
+        }
+
+        // 2. 保险数据计算器
+        class InsuranceCalculator {
+            constructor() {
+                this.realData = null;
+            }
+
+            // 使用真实数据计算
+            calculateFromRealData(age, paymentYears, annualPremium, totalYears = 50) {
+                // 检查数据是否加载完成
+                if (!insuranceDatabase) {
+                    alert("真实数据未加载，请刷新页面重试");
+                    return [];
+                }
+
+                // 查找当前年龄的真实数据
+                const genderChinese = currentGender === 'female' ? '女' : '男';
+                const ageKey = `${genderChinese}_${age}`;
+                console.log(`🔍 查找数据键: ${ageKey}`);
+                if (!insuranceDatabase[ageKey]) {
+                    // 显示可用的键以便调试
+                    const availableKeys = Object.keys(insuranceDatabase);
+                    const availableAges = availableKeys
+                        .filter(key => key.startsWith(genderChinese))
+                        .map(key => key.replace(`${genderChinese}_`, ''))
+                        .sort((a, b) => a - b);
+
+                    alert(`未找到${ageKey}岁的真实数据！当前${genderChinese}性支持年龄：${availableAges.join(", ")}岁`);
+                    return [];
+                }
+                const ageData = insuranceDatabase[ageKey];
+                const benefitData = ageData.benefit_data || [];
+
+                console.log(`📊 找到数据：${benefitData.length}行`);
+
+                // 生成50年的完整数据
+                const fullData = [];
+                for (let year = 1; year <= 50; year++) {
+                        const existingRow = benefitData.find(row => row.保单年度 === year);
+        
+                        if (existingRow) {
+                            // 使用真实数据
+                            fullData.push({
+                                保单年度: existingRow.保单年度,
+                                年末年龄: existingRow.年末年龄,
+                                年度保费: existingRow.年度保费,
+                                累计保费: existingRow.累计保费,
+                                现金价值: existingRow.现金价值,
+                                累计红利: existingRow.累计红利
+                            });
+                        } else {
+                            // 生成占位符数据（用"-"表示）
+                            fullData.push({
+                                保单年度: year,
+                                年末年龄: parseInt(age) + year,
+                                年度保费: "-",
+                                累计保费: "-", 
+                                现金价值: "-",
+                                累计红利: "-"
+                            });
+                        }
+                    }
+
+                // 检查交费期间是否匹配（只支持5年交）
+                if (paymentYears !== 5) {
+                    alert("未查找到数据，请重新输入参数\n目前只支持5年交费期间的数据");
+                    return [];
+                }
+
+                // 计算保费比例（基于JSON中的基准保费：10000元）
+                const basePremium = ageData.年交保费 || 10000;
+                const premiumRatio = annualPremium / basePremium;
+                console.log(`保费比例计算：输入保费${annualPremium}元 / 基准保费${basePremium}元 = ${premiumRatio.toFixed(4)}`);
+
+                // 提取年度真实数据并整理
+                const results = [];
+                let accumulatedPremium = 0;
+                let prevTotalBenefit = 0; // 用于计算收益率
+
+                for (let year = 1; year <= totalYears; year++) {
+                    const currentAge = age + year - 1;
+                    // 计算累计保费（仅交费期内累加）
+                    const yearPremium = year <= paymentYears ? annualPremium : 0;
+                    accumulatedPremium += yearPremium;
+
+                    // 从JSON中找到对应年度的数据
+                    const realYearData = ageData.benefit_data.find(item => item.保单年度 === year);
+                    if (!realYearData) {
+                        console.log(`第${year}年数据缺失，跳过该年度`);
+                        break; // 如果某一年数据缺失，停止提取后续数据
+                    }
+
+                    // 按保费比例调整数据并取整
+                    const cashValue = Math.round(realYearData.现金价值 * premiumRatio);
+                    const accumulatedBonus = Math.round(realYearData.累计红利 * premiumRatio);
+                    
+                    // 计算生存总利益 = 现金价值 + 累计红利
+                    const totalBenefit = Math.round(cashValue + accumulatedBonus);
+
+                    // 计算当年收益率
+                    let yieldRate = "-";
+                    if (year >= 6) { // 从第2年开始就可以计算收益率
+                        // 获取上一年的数据
+                        const prevYearData = results[year - 2]; // 因为数组索引从0开始，year-2对应上一年
+    
+                        if (prevYearData && prevYearData.totalBenefit !== "-") {
+                            const currentTotalBenefit = totalBenefit;
+                            const prevTotalBenefit = prevYearData.totalBenefit;
+        
+                            // 计算累计保费 = 年交保费 × 交费期间
+                            const totalAccumulatedPremium = annualPremium * paymentYears;
+        
+                            // 计算公式：当年收益率 = (当年生存总利益 - 上年生存总利益) / 累计保费 × 100%
+                            if (totalAccumulatedPremium > 0) {
+                                const profit = currentTotalBenefit - prevTotalBenefit;
+                                yieldRate = ((profit / totalAccumulatedPremium) * 100).toFixed(2) + "%";
+                            }
+                        }
+                    }
+                    prevTotalBenefit = totalBenefit;
+
+                    // 整理结果（所有数值取整）
+                    results.push({
+                        year: year,
+                        age: currentAge,
+                        yearPremium: Math.round(yearPremium),
+                        accumulatedPremium: Math.round(accumulatedPremium),
+                        cashValue: cashValue,
+                        accumulatedBonus: accumulatedBonus,
+                        totalBenefit: totalBenefit,
+                        yieldRate: yieldRate
+                    });
+                }
+
+                if (results.length === 0) {
+                    alert("未查找到数据，请重新输入参数");
+                }
+
+                return results;
+            }
+        }
+
+        // 3. DOM元素获取与初始化
+        const ageSlider = document.getElementById('age');
+        const ageValue = document.getElementById('ageValue');
+        const genderButtons = document.querySelectorAll('.gender-button');
+        const paymentButtons = document.querySelectorAll('.payment-button');
+        const premiumButtons = document.querySelectorAll('.premium-button');
+        const customPremium = document.getElementById('customPremium');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultBody = document.getElementById('resultBody');
+        const loading = document.getElementById('loading');
+        const exportBtn = document.getElementById('exportBtn');
+        const shareBtn = document.getElementById('shareBtn');
+
+        // 当前选择的参数
+        let currentAge = parseInt(ageSlider.value);
+        let currentGender = 'female';
+        let currentPaymentYears = 5;
+        let currentAnnualPremium = 100000;
+
+        // 初始化计算器
+        const calculator = new InsuranceCalculator();
+
+        // 4. 事件监听器：参数选择
+        // 年龄滑块
+        ageSlider.addEventListener('input', function() {
+            currentAge = parseInt(this.value);
+            ageValue.textContent = currentAge + '岁';
+        });
+
+        // 性别选择
+        genderButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                genderButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                currentGender = this.dataset.gender;
+            });
+        });
+
+        // 交费期间选择
+        paymentButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                paymentButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                currentPaymentYears = parseInt(this.dataset.payment);
+            });
+        });
+
+        // 保费选择
+        premiumButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                premiumButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                currentAnnualPremium = parseInt(this.dataset.premium);
+                customPremium.value = '';
+            });
+        });
+
+        // 自定义保费输入
+        customPremium.addEventListener('input', function() {
+            if (this.value && !isNaN(this.value) && this.value > 0) {
+                premiumButtons.forEach(btn => btn.classList.remove('active'));
+                currentAnnualPremium = parseInt(this.value);
+            }
+        });
+
+        // 5. 计算按钮点击事件
+        calculateBtn.addEventListener('click', async function() {
+            loading.style.display = 'block';
+            resultSection.classList.add('hidden');
+            resultBody.innerHTML = '';
+
+            if (!insuranceDatabase) {
+                insuranceDatabase = await loadInsuranceData();
+                if (!insuranceDatabase) {
+                    loading.style.display = 'none';
+                    return;
+                }
+            }
+
+            setTimeout(() => {
+                // 修改这里：显示50年数据而不是30年
+                const results = calculator.calculateFromRealData(
+                    currentAge,
+                    currentPaymentYears,
+                    currentAnnualPremium,
+                    50  // 改为50年
+                );
+
+                if (results.length > 0) {
+                    displayResults(results);
+                }
+
+                loading.style.display = 'none';
+                resultSection.classList.remove('hidden');
+            }, 500);
+        });
+
+        // 6. 显示结果到表格
+        function displayResults(results) {
+            resultBody.innerHTML = '';
+            
+            // 格式化函数：处理数字和占位符
+            const formatValue = (value) => {
+                if (value === "-" || value === null || value === undefined) {
+                    return "-";
+                }
+                if (typeof value === 'number') {
+                    return value.toLocaleString('zh-CN');
+                }
+                return value;
+            };
+
+            results.forEach(item => {
+                // 判断是否为占位符行
+                const isPlaceholder = item.cashValue === "-";
+                const rowClass = isPlaceholder ? 'style="background-color: #f9f9f9; color: #999; font-style: italic;"' : '';
+        
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="border border-gray-300 text-center">${item.year}</td>
+                    <td class="border border-gray-300 text-center">${item.age}</td>
+                    <td class="border border-gray-300 text-right">${formatValue(item.yearPremium)}</td>
+                    <td class="border border-gray-300 text-right">${formatValue(item.accumulatedPremium)}</td>
+                    <td class="border border-gray-300 text-right">${formatValue(item.cashValue)}</td>
+                    <td class="border border-gray-300 text-right">${formatValue(item.accumulatedBonus)}</td>
+                    <td class="border border-gray-300 text-right">${formatValue(item.totalBenefit)}</td>
+                    <td class="border border-gray-300 text-right">${formatValue(item.yieldRate)}</td>
+                `;
+        
+                // 如果该行是占位符，添加特殊样式
+                if (isPlaceholder) {
+                    row.style.backgroundColor = '#f9f9f9';
+                    row.style.color = '#999';
+                    row.style.fontStyle = 'italic';
+                }
+        
+                resultBody.appendChild(row);
+            });
+    
+            // 添加说明文字
+            const note = document.createElement('div');
+            note.className = 'data-source';
+            note.innerHTML = '✅ 数据来源：全年龄段合并数据.json<br>' +
+                             '<span style="color: #999; font-style: italic;">* 红利为预计数据，实际金额以保险公司公布为准</span>';
+            resultSection.appendChild(note);
+        }
+
+        // 7. 分享功能
+        function generateShareableLink() {
+            const params = new URLSearchParams({
+                age: currentAge,
+                gender: currentGender,
+                paymentYears: currentPaymentYears,
+                annualPremium: currentAnnualPremium
+            });
+            
+            const currentUrl = window.location.href.split('?')[0];
+            const shareUrl = `${currentUrl}?${params.toString()}`;
+            
+            showShareModal(shareUrl);
+        }
+
+        function showShareModal(shareUrl) {
+            const modalHtml = `
+                <div id="shareModal">
+                    <div class="share-modal-content">
+                        <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 15px; text-align: center;">分享保险计划书</h3>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-size: 14px; margin-bottom: 5px; font-weight: 500;">分享链接：</label>
+                            <div style="display: flex;">
+                                <input type="text" id="shareUrl" value="${shareUrl}" class="share-url-input" readonly>
+                                <button onclick="copyShareUrl()" class="copy-btn">复制</button>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin: 20px 0;">
+                            <div class="qrcode-container">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 48px;">📱</div>
+                                    <div style="font-size: 10px; margin-top: 5px;">扫描二维码</div>
+                                    <div style="font-size: 8px; color: #666;">${shareUrl.substring(0, 20)}...</div>
+                                </div>
+                            </div>
+                            <p style="font-size: 12px; color: #666;">微信扫一扫打开</p>
+                        </div>
+                        
+                        <div class="modal-buttons">
+                            <button onclick="shareToWechat()" class="modal-btn primary">微信分享</button>
+                            <button onclick="closeShareModal()" class="modal-btn secondary">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+
+        function copyShareUrl() {
+            const shareUrlInput = document.getElementById('shareUrl');
+            shareUrlInput.select();
+            document.execCommand('copy');
+            alert('✅ 链接已复制到剪贴板！');
+        }
+
+        function shareToWechat() {
+            alert('📱 请将复制的链接发送到微信聊天窗口');
+        }
+
+        function closeShareModal() {
+            const modal = document.getElementById('shareModal');
+            if (modal) modal.remove();
+        }
+
+        // 分享按钮事件
+        shareBtn.addEventListener('click', function() {
+            generateShareableLink();
+        });
+
+        // 8. 导出功能
+        exportBtn.addEventListener('click', function() {
+            alert('导出Excel需集成SheetJS库，可参考官方文档添加功能');
+        });
+
+        // 9. URL参数解析功能
+        function parseUrlParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.has('age')) {
+                currentAge = parseInt(urlParams.get('age')) || 50;
+                currentGender = urlParams.get('gender') || 'female';
+                currentPaymentYears = parseInt(urlParams.get('paymentYears')) || 5;
+                currentAnnualPremium = parseInt(urlParams.get('annualPremium')) || 100000;
+                
+                document.getElementById('age').value = currentAge;
+                document.getElementById('ageValue').textContent = currentAge + '岁';
+                
+                // 设置选中状态
+                setActiveButton('[data-gender="' + currentGender + '"]', 'gender');
+                setActiveButton('[data-payment="' + currentPaymentYears + '"]', 'payment');
+                setActiveButton('[data-premium="' + currentAnnualPremium + '"]', 'premium');
+                
+                // 自动计算
+                setTimeout(() => {
+                    calculateBenefits();
+                }, 1000);
+            }
+        }
+
+        function setActiveButton(selector, type) {
+            const buttons = document.querySelectorAll('.' + type + '-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            const targetBtn = document.querySelector(selector);
+            if (targetBtn) targetBtn.classList.add('active');
+        }
+
+        // 10. 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log("页面加载完成，开始预加载真实数据...");
+            insuranceDatabase = await loadInsuranceData();
+            parseUrlParameters(); // 解析URL参数
+        });
+
+        // 11. 辅助函数：计算利益
+        async function calculateBenefits() {
+            loading.style.display = 'block';
+            resultSection.classList.add('hidden');
+            resultBody.innerHTML = '';
+
+            if (!insuranceDatabase) {
+                insuranceDatabase = await loadInsuranceData();
+                if (!insuranceDatabase) {
+                    loading.style.display = 'none';
+                    return;
+                }
+            }
+
+            setTimeout(() => {
+                // 修改这里：显示50年数据
+                const results = calculator.calculateFromRealData(
+                    currentAge, 
+                    currentPaymentYears, 
+                    currentAnnualPremium,
+                    50  // 改为50年
+                );
+        
+                if (results.length > 0) {
+                    displayResults(results);
+                }
+        
+                loading.style.display = 'none';
+                resultSection.classList.remove('hidden');
+            }, 500);
+        }
+    </script>
+</body>
+</html>
