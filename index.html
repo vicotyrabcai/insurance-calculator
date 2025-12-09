@@ -9,7 +9,97 @@
     <script>window.publicPath = "https://gw.alipayobjects.com/render/p/yuyan/180023180006000310/";</script>
     <script defer src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 占位符行样式 */
+/* 模态框样式 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    padding: 0;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    padding: 20px 20px 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #1f2937;
+}
+
+.close-modal {
+    font-size: 24px;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.close-modal:hover {
+    color: #374151;
+}
+
+.modal-body {
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 10px 20px 20px;
+    text-align: right;
+}
+
+/* 更新日志列表样式 */
+#changelogList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#changelogList li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#changelogList li:last-child {
+    border-bottom: none;
+}
+
+.changelog-date {
+    font-weight: 600;
+    color: #3b82f6;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.changelog-content {
+    color: #374151;
+}
+
         /* 占位符行样式 */
         .placeholder-row {
             background-color: #f9f9f9 !important;
@@ -267,6 +357,28 @@
             display: block;
             margin-top: 4px;
         }
+        .title-line-3 {
+            font-size: 14px;
+            font-weight: normal;
+            color: #ff4444;
+            display: block;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        /* 版本链接样式 */
+        .version-link {
+            color: #3b82f6;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-left: 4px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .version-link:hover {
+            color: #2563eb;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -275,7 +387,8 @@
             <!-- 修改标题为两行居中 -->
             <h1 class="page-title">
                 <span class="title-line-1">幸福久久（尊享版）终身寿险（分红型）</span>
-                <span class="title-line-2">利益演示表V1.2</span>
+                <span class="title-line-2">利益演示表<a href="javascript:void(0)" id="versionLink" class="version-link">V1.3</a></span>
+                <span class="title-line-3">仅限内部学习交流，禁止外传</span>
             </h1>
             
             <!-- 性别选择 -->
@@ -389,14 +502,14 @@
                     <table class="result-table">
                         <thead>
                             <tr>
-                                <th style="width: 35px;">年度</th>
-                                <th style="width: 35px;">年龄</th>
-                                <th style="width: 70px;">年度保费</th>
-                                <th style="width: 70px;">累计保费</th>
-                                <th style="width: 70px;">现金价值</th>
-                                <th style="width: 70px;">累计红利</th>
-                                <th style="width: 70px;">生存总利益</th>
-                                <th style="width: 60px;">当年收益率</th>
+                                <th style="width: 40px;">年度</th>
+                                <th style="width: 40px;">年龄</th>
+                                <th style="width: 80px;">年度保费</th>
+                                <th style="width: 80px;">累计保费</th>
+                                <th style="width: 80px;">现金价值</th>
+                                <th style="width: 80px;">累计红利</th>
+                                <th style="width: 90px;">生存总利益</th>
+                                <th style="width: 50px;">当年收益率</th>
                             </tr>
                         </thead>
                         <tbody id="resultBody">
@@ -409,6 +522,23 @@
         </div>
     </div>
 
+<!-- 更新日志模态框 -->
+<div id="changelogModal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>更新日志</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <ul id="changelogList">
+                <!-- 更新日志内容将由JavaScript动态生成 -->
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button id="closeChangelog" class="modal-btn primary">关闭</button>
+        </div>
+    </div>
+</div>
     <script>
         // 全局变量：存储真实JSON数据
         let insuranceDatabase = null;
@@ -838,6 +968,16 @@
             console.log("页面加载完成，开始预加载真实数据...");
             insuranceDatabase = await loadInsuranceData();
             parseUrlParameters(); // 解析URL参数
+                // 添加更新日志事件绑定
+                document.getElementById('versionLink').addEventListener('click', showChangelog);
+                document.querySelector('.close-modal').addEventListener('click', closeChangelog);
+                document.getElementById('closeChangelog').addEventListener('click', closeChangelog);
+    
+                document.getElementById('changelogModal').addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeChangelog();
+                    }
+                });
         });
 
         // 11. 辅助函数：计算利益
@@ -871,6 +1011,40 @@
                 resultSection.classList.remove('hidden');
             }, 500);
         }
+// 更新日志数据 - 你可以在这里修改内容
+const changelogData = [
+    { date: "2025-12-09", content: "V1.3添加更新日志功能" },
+    { date: "2025-12-03", content: "V1.2冻结表格首行首列" },
+    { date: "2025-12-01", content: "V1.1添加5年交完整数据" }
+];
+
+// 显示更新日志
+function showChangelog() {
+    const modal = document.getElementById('changelogModal');
+    const list = document.getElementById('changelogList');
+    
+    // 清空现有内容
+    list.innerHTML = '';
+    
+    // 添加更新日志条目
+    changelogData.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span class="changelog-date">${item.date}</span>
+            <span class="changelog-content">${item.content}</span>
+        `;
+        list.appendChild(li);
+    });
+    
+    // 显示模态框
+    modal.classList.remove('hidden');
+}
+
+// 关闭更新日志
+function closeChangelog() {
+    document.getElementById('changelogModal').classList.add('hidden');
+}
+
     </script>
 </body>
 </html>
