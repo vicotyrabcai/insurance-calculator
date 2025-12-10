@@ -110,6 +110,7 @@
         /* 表格容器 */
         .table-container {
             max-height: 600px;
+            max-width: 100vw; /* 允许撑满视口宽度 */
             overflow: auto;
             border: 1px solid #ddd;
             margin-top: 10px;
@@ -121,7 +122,9 @@
             border-collapse: collapse;
             table-layout: fixed;
             width: 100%;
-            min-width: 800px;
+            min-width: auto !important; /* 移除固定最小宽度 */
+            width: 100%;
+            table-layout: auto; /* 改为自动布局，更灵活 */;
         }
 
         /* 冻结表头 */
@@ -387,58 +390,59 @@
             <!-- 修改标题为两行居中 -->
             <h1 class="page-title">
                 <span class="title-line-1">幸福久久（尊享版）终身寿险（分红型）</span>
-                <span class="title-line-2">利益演示表<a href="javascript:void(0)" id="versionLink" class="version-link">V1.3</a></span>
+                <span class="title-line-2">利益演示表<a href="javascript:void(0)" id="versionLink" class="version-link">V1.5</a></span>
                 <span class="title-line-3">仅限内部学习交流，禁止外传</span>
             </h1>
             
-            <!-- 性别选择 -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    <span class="material-icons text-sm mr-1">wc</span>性别
-                </label>
-                <div class="grid grid-cols-2 gap-2">
-                    <label class="gender-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer" data-gender="male" data-testid="gender-male">
-                        <input type="radio" name="gender" value="male" class="hidden">
-                        <span class="material-icons text-sm mr-1">man</span>男
-                    </label>
-                    <label class="gender-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer active" data-gender="female" data-testid="gender-female">
-                        <input type="radio" name="gender" value="female" class="hidden" checked>
-                        <span class="material-icons text-sm mr-1">woman</span>女
-                    </label>
-                </div>
-            </div>
+            <!-- 性别选择 - 一行显示 -->
+<div class="mb-4 flex items-center">
+    <label class="text-sm font-medium text-gray-700 mr-3 whitespace-nowrap" style="min-width: 60px;">
+        <span class="material-icons text-sm mr-1">wc</span>性别
+    </label>
+    <div class="flex gap-2 flex-1">
+        <label class="gender-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center" data-gender="male">
+            <input type="radio" name="gender" value="male" class="hidden">
+            <span class="material-icons text-sm mr-1">man</span>男
+        </label>
+        <label class="gender-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer active flex-1 text-center" data-gender="female">
+            <input type="radio" name="gender" value="female" class="hidden" checked>
+            <span class="material-icons text-sm mr-1">woman</span>女
+        </label>
+    </div>
+</div>
 
-            <!-- 投保年龄 -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    <span class="material-icons text-sm mr-1">person</span>投保年龄
-                </label>
-                <div class="flex items-center space-x-2">
-                    <input type="range" id="age" min="0" max="80" value="50" class="flex-1" data-testid="age-slider">
-                    <span id="ageValue" class="text-sm font-medium w-12 text-center">50岁</span>
-                </div>
-            </div>
+            <!-- 投保年龄 - 修改为一行显示 -->
+<!-- 投保年龄 - 确保有图标 -->
+<div class="mb-4 flex items-center">
+    <label class="text-sm font-medium text-gray-700 mr-3 whitespace-nowrap" style="min-width: 60px;">
+        <span class="material-icons text-sm mr-1" style="color: #666;">person</span>投保年龄
+    </label>
+    <div class="flex items-center space-x-2 flex-1">
+        <input type="range" id="age" min="0" max="80" value="50" class="flex-1">
+        <span id="ageValue" class="text-sm font-medium w-12 text-center">50岁</span>
+    </div>
+</div>
 
-            <!-- 交费期间 -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    <span class="material-icons text-sm mr-1">schedule</span>交费期间
-                </label>
-                <div class="grid grid-cols-4 gap-2">
-                    <button class="payment-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-payment="3" data-testid="payment-3">
-                        3年
-                    </button>
-                    <button class="payment-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-payment="4" data-testid="payment-4">
-                        4年
-                    </button>
-                    <button class="payment-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all active" data-payment="5" data-testid="payment-5">
-                        5年
-                    </button>
-                    <button class="payment-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-payment="10" data-testid="payment-10">
-                        10年
-                    </button>
-                </div>
-            </div>
+            <!-- 交费期间 - 一行显示，铺满整行 -->
+<div class="mb-4 flex items-center">
+    <label class="text-sm font-medium text-gray-700 mr-3 whitespace-nowrap" style="min-width: 60px;">
+        <span class="material-icons text-sm mr-1" style="color: #666;">schedule</span>交费期间
+    </label>
+    <div class="flex gap-2 flex-1">
+        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center" data-payment="3">
+            3年
+        </button>
+        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center" data-payment="4">
+            4年
+        </button>
+        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer active flex-1 text-center" data-payment="5">
+            5年
+        </button>
+        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center" data-payment="10">
+            10年
+        </button>
+    </div>
+</div>
 
             <!-- 年交保费 -->
             <div class="mb-4">
@@ -489,6 +493,26 @@
                     <span class="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">单位：元</span>
                 </div>
     
+                <div class="table-container">
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 35px; min-width: 35px;">年度</th>
+                                <th style="width: 35px; min-width: 35px;">年龄</th>
+                                <th style="width: 65px; min-width: 65px;">年度保费</th>
+                                <th style="width: 65px; min-width: 65px;">累计保费</th>
+                                <th style="width: 75px; min-width: 75px;">现金价值</th>
+                                <th style="width: 75px; min-width: 75px;">累计红利</th>
+                                <th style="width: 85px; min-width: 85px;">生存总利益</th>
+                                <th style="width: 55px; min-width: 55px;">当年收益率</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody">
+                            <!-- 数据将由JavaScript填充 -->
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="mb-3 flex gap-2">
                     <button id="exportBtn" class="flex-1 bg-green-500 text-white py-2 px-3 rounded-lg text-sm font-mediumbg-green-600 transition-colors">
                         <span class="material-icons text-sm mr-1">download</span>导出Excel
@@ -497,26 +521,7 @@
                         <span class="material-icons text-sm mr-1">share</span>微信分享
                     </button>
                 </div>
-    
-                <div class="table-container">
-                    <table class="result-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 40px;">年度</th>
-                                <th style="width: 40px;">年龄</th>
-                                <th style="width: 80px;">年度保费</th>
-                                <th style="width: 80px;">累计保费</th>
-                                <th style="width: 80px;">现金价值</th>
-                                <th style="width: 80px;">累计红利</th>
-                                <th style="width: 90px;">生存总利益</th>
-                                <th style="width: 50px;">当年收益率</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultBody">
-                            <!-- 数据将由JavaScript填充 -->
-                        </tbody>
-                    </table>
-                </div>
+
                 <div class="data-source">✅ 数据来源：全年龄段合并数据.json</div>
             </div>
         </div>
@@ -1013,6 +1018,8 @@
         }
 // 更新日志数据 - 你可以在这里修改内容
 const changelogData = [
+    { date: "2025-12-10", content: "V1.5优化表格宽度" },
+    { date: "2025-12-10", content: "V1.4优化界面布局" },
     { date: "2025-12-09", content: "V1.3添加更新日志功能" },
     { date: "2025-12-03", content: "V1.2冻结表格首行首列" },
     { date: "2025-12-01", content: "V1.1添加5年交完整数据" }
