@@ -382,6 +382,65 @@
             color: #2563eb;
             text-decoration: none;
         }
+/* === 表格颜色优化 === */
+
+/* 1. 表头样式：蓝底白字加粗 */
+.result-table thead th {
+    background-color: #3b82f6 !important; /* 蓝色背景 */
+    color: white !important; /* 白色文字 */
+    font-weight: 700 !important; /* 加粗 */
+    border-bottom: 2px solid #1e40af !important;
+}
+
+/* 2. 首列样式：蓝底白字加粗 */
+.result-table td:first-child,
+.result-table th:first-child {
+    background-color: #3b82f6 !important; /* 蓝色背景 */
+    color: white !important; /* 白色文字 */
+    font-weight: 700 !important; /* 加粗 */
+    border-right: 2px solid #1e40af !important;
+}
+
+/* 3. 左上角单元格特殊处理（同时属于首行和首列） */
+.result-table thead th:first-child {
+    background-color: #1e40af !important; /* 更深的蓝色 */
+    z-index: 30; /* 提高层级确保显示 */
+}
+
+/* 4. 特定年份行样式：红底白字加粗 */
+.highlight-year {
+    background-color: #dc2626 !important; /* 红色背景 */
+    color: white !important; /* 白色文字 */
+    font-weight: 700 !important; /* 加粗 */
+}
+
+.highlight-year td {
+    border-color: #b91c1c !important; /* 深红色边框 */
+}
+
+/* 5. 最后一列加.result-table td:last-child {
+    font-weight: 700 !important; /* 加粗 */
+    font-size: 11px !important; /* 稍微加大字号 */
+}
+
+/* 6. 确保悬浮效果在特殊行上也能显示 */
+.result-table tbody tr:hover:not(.highlight-year) {
+    background-color: #f0f7ff !important;
+}
+
+.result-table tbody tr.highlight-year:hover {
+    background-color: #ef4444 !important; /* 悬浮时稍亮的红色 */
+}
+
+/* 7. 冻结列在特殊行中的样式 */
+.result-table tbody tr.highlight-year td:first-child {
+    background-color: #dc2626 !important; /* 首列在特殊行中也用红色 */
+    border-right-color: #b91c1c !important;
+}
+
+.result-table tbody tr:hover td:first-child:not(.highlight-year) {
+    background-color: #2563eb !important; /* 悬浮时稍亮的蓝色 */
+}
     </style>
 </head>
 <body>
@@ -497,14 +556,14 @@
                     <table class="result-table">
                         <thead>
                             <tr>
-                                <th style="width: 35px; min-width: 35px;">年度</th>
-                                <th style="width: 35px; min-width: 35px;">年龄</th>
-                                <th style="width: 65px; min-width: 65px;">年度保费</th>
-                                <th style="width: 65px; min-width: 65px;">累计保费</th>
-                                <th style="width: 75px; min-width: 75px;">现金价值</th>
-                                <th style="width: 75px; min-width: 75px;">累计红利</th>
-                                <th style="width: 85px; min-width: 85px;">生存总利益</th>
-                                <th style="width: 55px; min-width: 55px;">当年收益率</th>
+                                <th style="width: 35px; min-width: 30px;">年度</th>
+                                <th style="width: 35px; min-width: 30px;">年龄</th>
+                                <th style="width: 65px; min-width: 60px;">年度保费</th>
+                                <th style="width: 65px; min-width: 60px;">累计保费</th>
+                                <th style="width: 75px; min-width: 60px;">现金价值</th>
+                                <th style="width: 75px; min-width: 60px;">累计红利</th>
+                                <th style="width: 85px; min-width: 60px;">生存总利益</th>
+                                <th style="width: 55px; min-width: 50px;">当年收益率</th>
                             </tr>
                         </thead>
                         <tbody id="resultBody">
@@ -823,32 +882,41 @@
                 return value;
             };
 
-            results.forEach(item => {
-                // 判断是否为占位符行
-                const isPlaceholder = item.cashValue === "-";
-                const rowClass = isPlaceholder ? 'style="background-color: #f9f9f9; color: #999; font-style: italic;"' : '';
-        
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="border border-gray-300 text-center">${item.year}</td>
-                    <td class="border border-gray-300 text-center">${item.age}</td>
-                    <td class="border border-gray-300 text-right">${formatValue(item.yearPremium)}</td>
-                    <td class="border border-gray-300 text-right">${formatValue(item.accumulatedPremium)}</td>
-                    <td class="border border-gray-300 text-right">${formatValue(item.cashValue)}</td>
-                    <td class="border border-gray-300 text-right">${formatValue(item.accumulatedBonus)}</td>
-                    <td class="border border-gray-300 text-right">${formatValue(item.totalBenefit)}</td>
-                    <td class="border border-gray-300 text-right">${formatValue(item.yieldRate)}</td>
-                `;
-        
-                // 如果该行是占位符，添加特殊样式
-                if (isPlaceholder) {
-                    row.style.backgroundColor = '#f9f9f9';
-                    row.style.color = '#999';
-                    row.style.fontStyle = 'italic';
-                }
-        
-                resultBody.appendChild(row);
-            });
+results.forEach(item => {
+    // 判断是否为占位符行
+    const isPlaceholder = item.cashValue === "-";
+    
+    // 判断是否为需要高亮的年份：6,10,15,20,25,30,35,40,45,50
+    const highlightYears = [6, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+    const isHighlightYear = highlightYears.includes(item.year);
+    
+    const row = document.createElement('tr');
+    
+    // 如果是高亮年份，添加特殊类
+    if (isHighlightYear) {
+        row.classList.add('highlight-year');
+    }
+    
+    // 如果是占位符行，添加特殊样式
+    if (isPlaceholder) {
+        row.style.backgroundColor = '#f9f9f9';
+        row.style.color = '#999';
+        row.style.fontStyle = 'italic';
+    }
+    
+    row.innerHTML = `
+        <td class="border border-gray-300 text-center">${item.year}</td>
+        <td class="border border-gray-300 text-center">${item.age}</td>
+        <td class="border border-gray-300 text-right">${formatValue(item.yearPremium)}</td>
+        <td class="border border-gray-300 text-right">${formatValue(item.accumulatedPremium)}</td>
+        <td class="border border-gray-300 text-right">${formatValue(item.cashValue)}</td>
+        <td class="border border-gray-300 text-right">${formatValue(item.accumulatedBonus)}</td>
+        <td class="border border-gray-300 text-right">${formatValue(item.totalBenefit)}</td>
+        <td class="border border-gray-300 text-right">${formatValue(item.yieldRate)}</td>
+    `;
+    
+    resultBody.appendChild(row);
+});
     
             // 添加说明文字
             const note = document.createElement('div');
@@ -1018,7 +1086,7 @@
         }
 // 更新日志数据 - 你可以在这里修改内容
 const changelogData = [
-    { date: "2025-12-10", content: "V1.5优化表格宽度" },
+    { date: "2025-12-10", content: "V1.5优化表格宽度和颜色" },
     { date: "2025-12-10", content: "V1.4优化界面布局" },
     { date: "2025-12-09", content: "V1.3添加更新日志功能" },
     { date: "2025-12-03", content: "V1.2冻结表格首行首列" },
