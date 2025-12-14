@@ -3,12 +3,33 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>幸福久久（尊享版）终身寿险（分红型）利益演示表</title>
+    <title>利益演示表</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script>window.injectInfo = { env: "PROD" };</script>
     <script>window.publicPath = "https://gw.alipayobjects.com/render/p/yuyan/180023180006000310/";</script>
     <script defer src="https://cdn.tailwindcss.com"></script>
     <style>
+/* 列显示/隐藏控制 */
+.annuity-column, .bonus-column {
+    display: table-cell;
+}
+
+/* 久久险种：隐藏年金列 */
+.product-forever .annuity-column {
+    display: none;
+}
+
+/* 满满险种：隐藏红利列 */
+.product-full .bonus-column {
+    display: none;
+}
+
+/* 年年险种：显示所有列 */
+.product-year .annuity-column,
+.product-year .bonus-column {
+    display: table-cell;
+}
+
 /* 模态框样式 */
 .modal {
     position: fixed;
@@ -109,7 +130,7 @@
 
         /* 表格容器 */
         .table-container {
-            max-height: 600px;
+            max-height: 780px;
             max-width: 100vw; /* 允许撑满视口宽度 */
             overflow: auto;
             border: 1px solid #ddd;
@@ -156,12 +177,12 @@
 
         /* 基本样式 */
         .result-table th, .result-table td {
-            padding: 8px 12px;
+            padding: 6px 8px;
             border: 1px solid #ddd;
             text-align: right;
             white-space: nowrap;
             font-size: 12px;
-            min-width: 60px;
+            min-width: 50px;
         }
 
         .result-table th:first-child,
@@ -354,13 +375,6 @@
             display: block;
         }
         .title-line-2 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #374151;
-            display: block;
-            margin-top: 4px;
-        }
-        .title-line-3 {
             font-size: 14px;
             font-weight: normal;
             color: #ff4444;
@@ -419,6 +433,7 @@
 }
 
 /* 5. 最后一列加.result-table td:last-child {
+.result-table td:last-child {
     font-weight: 700 !important; /* 加粗 */
     font-size: 11px !important; /* 稍微加大字号 */
 }
@@ -441,6 +456,26 @@
 .result-table tbody tr:hover td:first-child:not(.highlight-year) {
     background-color: #2563eb !important; /* 悬浮时稍亮的蓝色 */
 }
+/* 添加在style标签中 */
+.conditional-column {
+    display: table-cell;
+}
+
+/* 当满满险种时，隐藏生存总利益列 */
+.product-full .conditional-column {
+    display: none;
+}
+
+/* 调整满满险种的列宽 */
+.product-full .result-table th:nth-child(4),
+.product-full .result-table td:nth-child(4) {
+    width: 80px; /* 累计保险列稍宽 */
+}
+
+.product-full .result-table th:nth-child(5),
+.product-full .result-table td:nth-child(5) {
+    width: 70px; /* 年金列 */
+}
     </style>
 </head>
 <body>
@@ -448,10 +483,30 @@
         <div class="p-4">
             <!-- 修改标题为两行居中 -->
             <h1 class="page-title">
-                <span class="title-line-1">幸福久久（尊享版）终身寿险（分红型）</span>
-                <span class="title-line-2">利益演示表<a href="javascript:void(0)" id="versionLink" class="version-link">V1.5</a></span>
-                <span class="title-line-3">仅限内部学习交流，禁止外传</span>
+                <span class="title-line-1">利益演示表<a href="javascript:void(0)" id="versionLink" class="version-link">V2.0</a></span>
+                <span class="title-line-2">仅限内部学习交流，禁止外传</span>
             </h1>
+
+<!-- 险种选择 - 添加在性别行上方 -->
+<div class="mb-4 flex items-center">
+    <label class="text-sm font-medium text-gray-700 mr-3 whitespace-nowrap" style="min-width: 60px;">
+        <span class="material-icons text-sm mr-1" style="color: #666;">category</span>险种
+    </label>
+    <div class="flex gap-2 flex-1">
+        <label class="product-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer active flex-1 text-center" data-product="forever">
+            <input type="radio" name="product" value="forever" class="hidden" checked>
+            久久
+        </label>
+        <label class="product-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center" data-product="full">
+            <input type="radio" name="product" value="full">
+            满满
+        </label>
+        <label class="product-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center" data-product="year">
+            <input type="radio" name="product" value="year">
+            年年
+        </label>
+    </div>
+</div>
             
             <!-- 性别选择 - 一行显示 -->
 <div class="mb-4 flex items-center">
@@ -512,16 +567,16 @@
                 <!-- 快速选择按钮 -->
                 <div class="grid grid-cols-4 gap-2 mb-3">
                     <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-premium="10000" data-testid="premium-10000">
-                        1万元
+                        1万
                     </button>
                     <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-premium="50000" data-testid="premium-50000">
-                        5万元
+                        5万
                     </button>
                     <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all active" data-premium="100000" data-testid="premium-100000">
-                        10万元
+                        10万
                     </button>
                     <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-premium="1000000" data-testid="premium-1000000">
-                        100万元
+                        100万
                     </button>
                 </div>
                 
@@ -545,44 +600,45 @@
                 <p class="text-gray-600 mt-2">正在加载真实数据，请勿刷新...</p>
             </div>
 
-            <!-- 计算结果 -->
-            <div id="resultSection" class="hidden">
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-lg font-bold text-gray-800">年度利益明细</h2>
-                    <span class="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">单位：元</span>
-                </div>
-    
-                <div class="table-container">
-                    <table class="result-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 35px; min-width: 30px;">年度</th>
-                                <th style="width: 35px; min-width: 30px;">年龄</th>
-                                <th style="width: 65px; min-width: 60px;">年度保费</th>
-                                <th style="width: 65px; min-width: 60px;">累计保费</th>
-                                <th style="width: 75px; min-width: 60px;">现金价值</th>
-                                <th style="width: 75px; min-width: 60px;">累计红利</th>
-                                <th style="width: 85px; min-width: 60px;">生存总利益</th>
-                                <th style="width: 55px; min-width: 50px;">当年收益率</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultBody">
-                            <!-- 数据将由JavaScript填充 -->
-                        </tbody>
-                    </table>
-                </div>
+<!-- 计算结果 -->
+<div id="resultSection" class="hidden">
+    <div class="flex justify-between items-center mb-3">
+        <h2 class="text-lg font-bold text-gray-800">年度利益明细</h2>
+        <span class="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">单位：元</span>
+    </div>
 
-                <div class="mb-3 flex gap-2">
-                    <button id="exportBtn" class="flex-1 bg-green-500 text-white py-2 px-3 rounded-lg text-sm font-mediumbg-green-600 transition-colors">
-                        <span class="material-icons text-sm mr-1">download</span>导出Excel
-                    </button>
-                    <button id="shareBtn" class="flex-1 bg-green-600 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
-                        <span class="material-icons text-sm mr-1">share</span>微信分享
-                    </button>
-                </div>
+    <div class="table-container">
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th style="width: 35px; min-width: 30px;">年度</th>
+                    <th style="width: 35px; min-width: 30px;">年龄</th>
+                    <th style="width: 65px; min-width: 60px;">年交保费</th>
+                    <th style="width: 65px; min-width: 60px;">累计保费</th>
+                    <th style="width 75px; min-width: 60px;" class="annuity-column">年金</th>
+                    <th style="width: 75px; min-width: 60px;" class="bonus-column">累计红利</th>
+                    <th style="width: 75px; min-width: 60px;">现金价值</th>
+                    <th style="width: 85px; min-width: 60px;">生存总利益</th>
+                    <th style="width: 55px; min-width: 50px;">年增长率</th>
+                </tr>
+            </thead>
+            <tbody id="resultBody">
+                <!-- 数据将由JavaScript填充 -->
+            </tbody>
+        </table>
+    </div>
 
-                <div class="data-source">✅ 数据来源：全年龄段合并数据.json</div>
-            </div>
+    <div class="mb-3 flex gap-2">
+        <button id="exportBtn" class="flex-1 bg-green-500 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-600 transition-colors">
+<span class="material-icons text-sm mr-1">download</span>导出Excel
+        </button>
+        <button id="shareBtn" class="flex-1 bg-green-600 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
+            <span class="material-icons text-sm mr-1">share</span>微信分享
+        </button>
+    </div>
+
+    <div class="data-source">✅ 数据来源：<span id="dataSourceText">幸福久久全年龄段5年交数据.json</span></div>
+</div>
         </div>
     </div>
 
@@ -603,494 +659,397 @@
         </div>
     </div>
 </div>
-    <script>
-        // 全局变量：存储真实JSON数据
-        let insuranceDatabase = null;
+<script>
+    // 全局变量
+    let insuranceDatabase = null;
+    let currentProduct = 'forever';
+    let currentAge = 50;
+    let currentGender = 'female';
+    let currentPaymentYears = 5;
+    let currentAnnualPremium = 100000;
 
-        // 1. 加载真实JSON数据
-        async function loadInsuranceData() {
-            try {
-                console.log("开始加载真实数据...");
-                const response = await fetch('index_files/全年龄段合并数据.json');
-                
-                if (!response.ok) {
-                    throw new Error(`数据文件未找到！请检查"index_files"文件夹是否与HTML同级，状态码: ${response.status}`);
-                }
-                
-                insuranceDatabase = await response.json();
-                console.log("✅ 真实数据加载成功！包含年龄节点：", Object.keys(insuranceDatabase).join(", "));
-                
-                return insuranceDatabase;
-            } catch (error) {
-                console.error("❌ 数据加载失败：", error.message);
-                alert("真实数据加载失败！错误：" + error.message + "\n请检查JSON文件路径和格式");
-                return null;
+    // 表格列结构模板 - 修复字符串引号
+    const productTableTemplates = {
+        'forever': ['年度', '年龄', '年度保费', '累计保费', '现金价值', '累计红利', '生存总利益', '当年收益率'],
+        'full': ['年度', '年龄', '年交保费', '累计保险', '年金', '现金价值', '生存总利益', '年增长率'],
+        'year': ['年度', '年龄', '年交保费', '累计保费', '养老年金', '现金价值', '累计红利', '生存总利益', '年增长率']
+    };
+
+// 1. 加载数据函数
+async function loadInsuranceData(productType = currentProduct) {
+    try {
+        let dataFile = '';
+        switch(productType) {
+            case 'forever': dataFile = 'index_files/幸福久久全年龄段5年交数据.json'; break;
+            case 'full': dataFile = 'index_files/幸福满满全年龄段5年交数据.json'; break;
+            case 'year': dataFile = 'index_files/幸福年年全年龄段5年交数据.json'; break;
+            default: dataFile = 'index_files/幸福久久全年龄段5年交数据.json';
+        }
+        
+        console.log(`正在加载数据文件: ${dataFile}`);
+        const response = await fetch(dataFile);
+        if (!response.ok) throw new Error(`文件未找到: ${dataFile}`);
+        
+        insuranceDatabase = await response.json();
+        console.log(`✅ ${productType}数据加载成功`);
+
+        // 调试信息：显示数据结构
+        console.log(`📊 ${productType}数据库键名:`, Object.keys(insuranceDatabase));
+        if (Object.keys(insuranceDatabase).length > 0) {
+            const sampleKey = Object.keys(insuranceDatabase)[0];
+            console.log(`📋 ${productType}样本数据:`, insuranceDatabase[sampleKey]);
+            if (insuranceDatabase[sampleKey].benefit_data) {
+if (insuranceDatabase[sampleKey].benefit_data && insuranceDatabase[sampleKey].benefit_data.length > 0) {
+    console.log(`🔍 第一年数据字段:`, Object.keys(insuranceDatabase[sampleKey].benefit_data[0]));
+} else {
+    console.log(`⚠️  benefit_data为空或不存在`);
+}
             }
         }
 
-        // 2. 保险数据计算器
-        class InsuranceCalculator {
-            constructor() {
-                this.realData = null;
-            }
+        return insuranceDatabase;
+    } catch (error) {
+        console.error('❌ 数据加载失败:', error);
+        alert(`数据加载失败: ${error.message}`);
+        return null;
+    }
+}
 
-            // 使用真实数据计算
-            calculateFromRealData(age, paymentYears, annualPremium, totalYears = 50) {
-                // 检查数据是否加载完成
-                if (!insuranceDatabase) {
-                    alert("真实数据未加载，请刷新页面重试");
-                    return [];
-                }
+// 2. 计算器类 - 统一的计算逻辑
+class InsuranceCalculator {
+    calculateFromRealData(age, paymentYears, annualPremium, totalYears = 50) {
+        if (!insuranceDatabase) {
+            alert("数据未加载");
+            return [];
+        }
 
-                // 查找当前年龄的真实数据
-                const genderChinese = currentGender === 'female' ? '女' : '男';
-                const ageKey = `${genderChinese}_${age}`;
-                console.log(`🔍 查找数据键: ${ageKey}`);
-                if (!insuranceDatabase[ageKey]) {
-                    // 显示可用的键以便调试
-                    const availableKeys = Object.keys(insuranceDatabase);
-                    const availableAges = availableKeys
-                        .filter(key => key.startsWith(genderChinese))
-                        .map(key => key.replace(`${genderChinese}_`, ''))
-                        .sort((a, b) => a - b);
-
-                    alert(`未找到${ageKey}岁的真实数据！当前${genderChinese}性支持年龄：${availableAges.join(", ")}岁`);
-                    return [];
-                }
-                const ageData = insuranceDatabase[ageKey];
-                const benefitData = ageData.benefit_data || [];
-
-                console.log(`📊 找到数据：${benefitData.length}行`);
-
-                // 生成50年的完整数据
-                const fullData = [];
-                for (let year = 1; year <= 50; year++) {
-                        const existingRow = benefitData.find(row => row.保单年度 === year);
+        const genderChinese = currentGender === 'female' ? '女' : '男';
+        const ageKey = `${genderChinese}_${age}`;
         
-                        if (existingRow) {
-                            // 使用真实数据
-                            fullData.push({
-                                保单年度: existingRow.保单年度,
-                                年末年龄: existingRow.年末年龄,
-                                年度保费: existingRow.年度保费,
-                                累计保费: existingRow.累计保费,
-                                现金价值: existingRow.现金价值,
-                                累计红利: existingRow.累计红利
-                            });
-                        } else {
-                            // 生成占位符数据（用"-"表示）
-                            fullData.push({
-                                保单年度: year,
-                                年末年龄: parseInt(age) + year,
-                                年度保费: "-",
-                                累计保费: "-", 
-                                现金价值: "-",
-                                累计红利: "-"
-                            });
-                        }
-                    }
+        console.log(`🔍 查找数据键: ${ageKey}`);
+        
+        if (!insuranceDatabase[ageKey]) {
+            alert(`未找到${genderChinese}性${age}岁的数据`);
+            console.log(`❌ 可用键名:`, Object.keys(insuranceDatabase));
+            return [];
+        }
 
-                // 检查交费期间是否匹配（只支持5年交）
-                if (paymentYears !== 5) {
-                    alert("未查找到数据，请重新输入参数\n目前只支持5年交费期间的数据");
-                    return [];
-                }
+        const ageData = insuranceDatabase[ageKey];
+        const benefitData = ageData.benefit_data || [];
+        
+        console.log(`📈 找到${benefitData.length}年数据`);
+        
+        if (benefitData.length === 0) {
+            alert("该年龄段无数据");
+            return [];
+        }
 
-                // 计算保费比例（基于JSON中的基准保费：10000元）
-                const basePremium = ageData.年交保费 || 10000;
-                const premiumRatio = annualPremium / basePremium;
-                console.log(`保费比例计算：输入保费${annualPremium}元 / 基准保费${basePremium}元 = ${premiumRatio.toFixed(4)}`);
+        const results = [];
+        let previousTotalBenefit = 0;
+        let totalAnnuityReceived = 0;
 
-                // 提取年度真实数据并整理
-                const results = [];
-                let accumulatedPremium = 0;
-                let prevTotalBenefit = 0; // 用于计算收益率
-
-                for (let year = 1; year <= totalYears; year++) {
-                    const currentAge = age + year - 1;
-                    // 计算累计保费（仅交费期内累加）
-                    const yearPremium = year <= paymentYears ? annualPremium : 0;
-                    accumulatedPremium += yearPremium;
-
-                    // 从JSON中找到对应年度的数据
-                    const realYearData = ageData.benefit_data.find(item => item.保单年度 === year);
-                    if (!realYearData) {
-                        console.log(`第${year}年数据缺失，跳过该年度`);
-                        break; // 如果某一年数据缺失，停止提取后续数据
-                    }
-
-                    // 按保费比例调整数据并取整
-                    const cashValue = Math.round(realYearData.现金价值 * premiumRatio);
-                    const accumulatedBonus = Math.round(realYearData.累计红利 * premiumRatio);
-                    
-                    // 计算生存总利益 = 现金价值 + 累计红利
-                    const totalBenefit = Math.round(cashValue + accumulatedBonus);
-
-                    // 计算当年收益率
-                    let yieldRate = "-";
-                    if (year >= 6) { // 从第2年开始就可以计算收益率
-                        // 获取上一年的数据
-                        const prevYearData = results[year - 2]; // 因为数组索引从0开始，year-2对应上一年
+for (let year = 1; year <= totalYears && year <= benefitData.length; year++) {
+    const realYearData = benefitData[year - 1];
     
-                        if (prevYearData && prevYearData.totalBenefit !== "-") {
-                            const currentTotalBenefit = totalBenefit;
-                            const prevTotalBenefit = prevYearData.totalBenefit;
-        
-                            // 计算累计保费 = 年交保费 × 交费期间
-                            const totalAccumulatedPremium = annualPremium * paymentYears;
-        
-                            // 计算公式：当年收益率 = (当年生存总利益 - 上年生存总利益) / 累计保费 × 100%
-                            if (totalAccumulatedPremium > 0) {
-                                const profit = currentTotalBenefit - prevTotalBenefit;
-                                yieldRate = ((profit / totalAccumulatedPremium) * 100).toFixed(2) + "%";
-                            }
-                        }
-                    }
-                    prevTotalBenefit = totalBenefit;
+    if (!realYearData) {
+        console.log(`⏹️ 第${year}年无数据，停止计算`);
+        break;
+    }
 
-                    // 整理结果（所有数值取整）
-                    results.push({
-                        year: year,
-                        age: currentAge,
-                        yearPremium: Math.round(yearPremium),
-                        accumulatedPremium: Math.round(accumulatedPremium),
-                        cashValue: cashValue,
-                        accumulatedBonus: accumulatedBonus,
-                        totalBenefit: totalBenefit,
-                        yieldRate: yieldRate
-                    });
-                }
+    // 从JSON获取基础数据
+    const yearPremium = year <= paymentYears ? annualPremium : 0;
+    const accumulatedPremium = annualPremium * Math.min(year, paymentYears);
+    
+    // 统一字段名
+    const annuity = Math.round((realYearData.年金 || 0) * (annualPremium / 10000));
+    const bonus = Math.round((realYearData.累计红利 || 0) * (annualPremium / 10000));
+    const cashValue = Math.round((realYearData.现金价值 || 0) * (annualPremium / 10000));
+    
+    // 计算生存总利益
+    totalAnnuityReceived += annuity;
+    const totalBenefit = cashValue + bonus + totalAnnuityReceived;
 
-                if (results.length === 0) {
-                    alert("未查找到数据，请重新输入参数");
-                }
-
-                return results;
-            }
+    // 修正：只有第6年及以后才计算增长率
+    let growthRate = "-";
+    if (year >= 6 && previousTotalBenefit > 0) {
+        const profit = totalBenefit - previousTotalBenefit;
+        if (accumulatedPremium > 0) {
+            const rate = (profit / accumulatedPremium) * 100;
+            growthRate = rate.toFixed(2) + "%";
+            
+            console.log(`📈 第${year}年增长率计算:`, {
+                当年生存总利益: totalBenefit,
+                上年生存总利益: previousTotalBenefit,
+                收益差额: profit,
+                累计保费: accumulatedPremium,
+                收益率: growthRate
+            });
         }
+    }
+    
+    // 关键修改：必须在保存结果前更新previousTotalBenefit
+    previousTotalBenefit = totalBenefit;  // 这行必须在push之前
 
-        // 3. DOM元素获取与初始化
+    results.push({
+        year: year,
+        age: age + year - 1,
+        yearPremium: yearPremium,
+        accumulatedPremium: accumulatedPremium,
+        annuity: annuity,
+        bonus: bonus,
+        cashValue: cashValue,
+        totalBenefit: totalBenefit,
+        growthRate: growthRate,
+        totalAnnuityReceived: totalAnnuityReceived
+    });
+    
+    console.log(`📊 第${year}年数据:`, {
+        年增长率: growthRate,
+        生存总利益: totalBenefit,
+        上一年生存总利益: previousTotalBenefit
+    });
+}
+
+        console.log(`✅ 计算完成，共${results.length}年数据`);
+        return results;
+    }
+}
+
+    const calculator = new InsuranceCalculator();
+
+    // 3. 页面初始化 - 合并为一个事件监听器
+    document.addEventListener('DOMContentLoaded', async function() {
+        console.log("页面开始初始化...");
+        
+        // 获取DOM元素
         const ageSlider = document.getElementById('age');
         const ageValue = document.getElementById('ageValue');
-        const genderButtons = document.querySelectorAll('.gender-button');
-        const paymentButtons = document.querySelectorAll('.payment-button');
-        const premiumButtons = document.querySelectorAll('.premium-button');
-        const customPremium = document.getElementById('customPremium');
         const calculateBtn = document.getElementById('calculateBtn');
         const resultSection = document.getElementById('resultSection');
         const resultBody = document.getElementById('resultBody');
         const loading = document.getElementById('loading');
-        const exportBtn = document.getElementById('exportBtn');
-        const shareBtn = document.getElementById('shareBtn');
 
-        // 当前选择的参数
-        let currentAge = parseInt(ageSlider.value);
-        let currentGender = 'female';
-        let currentPaymentYears = 5;
-        let currentAnnualPremium = 100000;
+        // 加载初始数据
+        console.log("开始加载保险数据...");
+        await loadInsuranceData();
+        console.log("保险数据加载完成");
 
-        // 初始化计算器
-        const calculator = new InsuranceCalculator();
-
-        // 4. 事件监听器：参数选择
-        // 年龄滑块
+        // 绑定年龄滑块事件
         ageSlider.addEventListener('input', function() {
             currentAge = parseInt(this.value);
             ageValue.textContent = currentAge + '岁';
+            console.log("年龄改为:", currentAge);
         });
 
-        // 性别选择
-        genderButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                genderButtons.forEach(btn => btn.classList.remove('active'));
+        // 绑定性别按钮事件
+        document.querySelectorAll('.gender-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.gender-button').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 currentGender = this.dataset.gender;
+                console.log("性别改为:", currentGender);
             });
         });
 
-        // 交费期间选择
-        paymentButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                paymentButtons.forEach(btn => btn.classList.remove('active'));
+        // 绑定交费期间按钮事件
+        document.querySelectorAll('.payment-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.payment-button').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 currentPaymentYears = parseInt(this.dataset.payment);
+                console.log("交费期间改为:", currentPaymentYears);
             });
         });
 
-        // 保费选择
-        premiumButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                premiumButtons.forEach(btn => btn.classList.remove('active'));
+        // 绑定保费按钮事件
+        document.querySelectorAll('.premium-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.premium-button').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 currentAnnualPremium = parseInt(this.dataset.premium);
-                customPremium.value = '';
+                document.getElementById('customPremium').value = '';
+                console.log("年交保费改为:", currentAnnualPremium);
             });
         });
 
-        // 自定义保费输入
-        customPremium.addEventListener('input', function() {
-            if (this.value && !isNaN(this.value) && this.value > 0) {
-                premiumButtons.forEach(btn => btn.classList.remove('active'));
-                currentAnnualPremium = parseInt(this.value);
-            }
-        });
-
-        // 5. 计算按钮点击事件
-        calculateBtn.addEventListener('click', async function() {
-            loading.style.display = 'block';
-            resultSection.classList.add('hidden');
-            resultBody.innerHTML = '';
-
-            if (!insuranceDatabase) {
-                insuranceDatabase = await loadInsuranceData();
-                if (!insuranceDatabase) {
-                    loading.style.display = 'none';
-                    return;
+        // 绑定自定义保费输入事件
+        const customPremiumInput = document.getElementById('customPremium');
+        if (customPremiumInput) {
+            customPremiumInput.addEventListener('input', function() {
+                if (this.value && !isNaN(this.value) && this.value > 0) {
+                    document.querySelectorAll('.premium-button').forEach(btn => btn.classList.remove('active'));
+                    currentAnnualPremium = parseInt(this.value);
+                    console.log("自定义保费:", currentAnnualPremium);
                 }
-            }
+            });
+        }
 
-            setTimeout(() => {
-                // 修改这里：显示50年数据而不是30年
-                const results = calculator.calculateFromRealData(
-                    currentAge,
-                    currentPaymentYears,
-                    currentAnnualPremium,
-                    50  // 改为50年
-                );
-
-                if (results.length > 0) {
-                    displayResults(results);
-                }
-
-                loading.style.display = 'none';
-                resultSection.classList.remove('hidden');
-            }, 500);
-        });
-
-        // 6. 显示结果到表格
-        function displayResults(results) {
-            resultBody.innerHTML = '';
-            
-            // 格式化函数：处理数字和占位符
-            const formatValue = (value) => {
-                if (value === "-" || value === null || value === undefined) {
-                    return "-";
-                }
-                if (typeof value === 'number') {
-                    return value.toLocaleString('zh-CN');
-                }
-                return value;
-            };
-
-results.forEach(item => {
-    // 判断是否为占位符行
-    const isPlaceholder = item.cashValue === "-";
-    
-    // 判断是否为需要高亮的年份：6,10,15,20,25,30,35,40,45,50
-    const highlightYears = [6, 10, 15, 20, 25, 30, 35, 40, 45, 50];
-    const isHighlightYear = highlightYears.includes(item.year);
-    
-    const row = document.createElement('tr');
-    
-    // 如果是高亮年份，添加特殊类
-    if (isHighlightYear) {
-        row.classList.add('highlight-year');
-    }
-    
-    // 如果是占位符行，添加特殊样式
-    if (isPlaceholder) {
-        row.style.backgroundColor = '#f9f9f9';
-        row.style.color = '#999';
-        row.style.fontStyle = 'italic';
-    }
-    
-    row.innerHTML = `
-        <td class="border border-gray-300 text-center">${item.year}</td>
-        <td class="border border-gray-300 text-center">${item.age}</td>
-        <td class="border border-gray-300 text-right">${formatValue(item.yearPremium)}</td>
-        <td class="border border-gray-300 text-right">${formatValue(item.accumulatedPremium)}</td>
-        <td class="border border-gray-300 text-right">${formatValue(item.cashValue)}</td>
-        <td class="border border-gray-300 text-right">${formatValue(item.accumulatedBonus)}</td>
-        <td class="border border-gray-300 text-right">${formatValue(item.totalBenefit)}</td>
-        <td class="border border-gray-300 text-right">${formatValue(item.yieldRate)}</td>
-    `;
-    
-    resultBody.appendChild(row);
+// 绑定险种切换
+document.querySelectorAll('.product-button').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.product-button').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentProduct = this.dataset.product;
+        console.log("险种改为:", currentProduct);
+        
+        // 重新加载数据并计算
+        calculateBenefits();
+    });
 });
-    
-            // 添加说明文字
-            const note = document.createElement('div');
-            note.className = 'data-source';
-            note.innerHTML = '✅ 数据来源：全年龄段合并数据.json<br>' +
-                             '<span style="color: #999; font-style: italic;">* 红利为预计数据，实际金额以保险公司公布为准</span>';
-            resultSection.appendChild(note);
-        }
 
-        // 7. 分享功能
-        function generateShareableLink() {
-            const params = new URLSearchParams({
-                age: currentAge,
-                gender: currentGender,
-                paymentYears: currentPaymentYears,
-                annualPremium: currentAnnualPremium
-            });
-            
-            const currentUrl = window.location.href.split('?')[0];
-            const shareUrl = `${currentUrl}?${params.toString()}`;
-            
-            showShareModal(shareUrl);
-        }
+        // 计算按钮事件
+        calculateBtn.addEventListener('click', calculateBenefits);
 
-        function showShareModal(shareUrl) {
-            const modalHtml = `
-                <div id="shareModal">
-                    <div class="share-modal-content">
-                        <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 15px; text-align: center;">分享保险计划书</h3>
-                        
-                        <div style="margin-bottom: 15px;">
-                            <label style="display: block; font-size: 14px; margin-bottom: 5px; font-weight: 500;">分享链接：</label>
-                            <div style="display: flex;">
-                                <input type="text" id="shareUrl" value="${shareUrl}" class="share-url-input" readonly>
-                                <button onclick="copyShareUrl()" class="copy-btn">复制</button>
-                            </div>
-                        </div>
-                        
-                        <div style="text-align: center; margin: 20px 0;">
-                            <div class="qrcode-container">
-                                <div style="text-align: center;">
-                                    <div style="font-size: 48px;">📱</div>
-                                    <div style="font-size: 10px; margin-top: 5px;">扫描二维码</div>
-                                    <div style="font-size: 8px; color: #666;">${shareUrl.substring(0, 20)}...</div>
-                                </div>
-                            </div>
-                            <p style="font-size: 12px; color: #666;">微信扫一扫打开</p>
-                        </div>
-                        
-                        <div class="modal-buttons">
-                            <button onclick="shareToWechat()" class="modal-btn primary">微信分享</button>
-                            <button onclick="closeShareModal()" class="modal-btn secondary">关闭</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-        }
-
-        function copyShareUrl() {
-            const shareUrlInput = document.getElementById('shareUrl');
-            shareUrlInput.select();
-            document.execCommand('copy');
-            alert('✅ 链接已复制到剪贴板！');
-        }
-
-        function shareToWechat() {
-            alert('📱 请将复制的链接发送到微信聊天窗口');
-        }
-
-        function closeShareModal() {
-            const modal = document.getElementById('shareModal');
-            if (modal) modal.remove();
-        }
-
-        // 分享按钮事件
-        shareBtn.addEventListener('click', function() {
-            generateShareableLink();
-        });
-
-        // 8. 导出功能
-        exportBtn.addEventListener('click', function() {
-            alert('导出Excel需集成SheetJS库，可参考官方文档添加功能');
-        });
-
-        // 9. URL参数解析功能
-        function parseUrlParameters() {
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            if (urlParams.has('age')) {
-                currentAge = parseInt(urlParams.get('age')) || 50;
-                currentGender = urlParams.get('gender') || 'female';
-                currentPaymentYears = parseInt(urlParams.get('paymentYears')) || 5;
-                currentAnnualPremium = parseInt(urlParams.get('annualPremium')) || 100000;
-                
-                document.getElementById('age').value = currentAge;
-                document.getElementById('ageValue').textContent = currentAge + '岁';
-                
-                // 设置选中状态
-                setActiveButton('[data-gender="' + currentGender + '"]', 'gender');
-                setActiveButton('[data-payment="' + currentPaymentYears + '"]', 'payment');
-                setActiveButton('[data-premium="' + currentAnnualPremium + '"]', 'premium');
-                
-                // 自动计算
-                setTimeout(() => {
-                    calculateBenefits();
-                }, 1000);
-            }
-        }
-
-        function setActiveButton(selector, type) {
-            const buttons = document.querySelectorAll('.' + type + '-button');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            const targetBtn = document.querySelector(selector);
-            if (targetBtn) targetBtn.classList.add('active');
-        }
-
-        // 10. 页面加载时初始化
-        document.addEventListener('DOMContentLoaded', async function() {
-            console.log("页面加载完成，开始预加载真实数据...");
-            insuranceDatabase = await loadInsuranceData();
-            parseUrlParameters(); // 解析URL参数
-    // 新增这行：自动点击计算按钮
-    setTimeout(function() {
-        document.getElementById('calculateBtn').click();
-    }, 800);
-            
-                // 添加更新日志事件绑定
-                document.getElementById('versionLink').addEventListener('click', showChangelog);
-                document.querySelector('.close-modal').addEventListener('click', closeChangelog);
-                document.getElementById('closeChangelog').addEventListener('click', closeChangelog);
-    
-                document.getElementById('changelogModal').addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeChangelog();
-                    }
-                });
-        });
-
-        // 11. 辅助函数：计算利益
-        async function calculateBenefits() {
-            loading.style.display = 'block';
-            resultSection.classList.add('hidden');
-            resultBody.innerHTML = '';
-
-            if (!insuranceDatabase) {
-                insuranceDatabase = await loadInsuranceData();
-                if (!insuranceDatabase) {
-                    loading.style.display = 'none';
-                    return;
-                }
-            }
-
-            setTimeout(() => {
-                // 修改这里：显示50年数据
-                const results = calculator.calculateFromRealData(
-                    currentAge, 
-                    currentPaymentYears, 
-                    currentAnnualPremium,
-                    50  // 改为50年
-                );
+        // 绑定更新日志事件
+        document.getElementById('versionLink').addEventListener('click', showChangelog);
+        document.querySelector('.close-modal').addEventListener('click', closeChangelog);
+        document.getElementById('closeChangelog').addEventListener('click', closeChangelog);
         
-                if (results.length > 0) {
-                    displayResults(results);
-                }
+        document.getElementById('changelogModal').addEventListener('click', function(e) {
+            if (e.target === this) closeChangelog();
+        });
+
+        console.log("所有事件绑定完成，准备自动计算...");
         
-                loading.style.display = 'none';
-                resultSection.classList.remove('hidden');
-            }, 500);
+        // 自动计算
+        setTimeout(() => {
+            console.log("开始自动计算...");
+            calculateBtn.click();
+        }, 1000);
+    });
+
+// 4. 计算利益函数
+async function calculateBenefits() {
+    console.log("开始计算利益...");
+    console.log("当前参数:", {
+        险种: currentProduct,
+        性别: currentGender,
+        年龄: currentAge,
+        交费期间: currentPaymentYears,
+        年交保费: currentAnnualPremium
+    });
+    
+    const loading = document.getElementById('loading');
+    const resultSection = document.getElementById('resultSection');
+    const resultBody = document.getElementById('resultBody');
+
+    loading.style.display = 'block';
+    resultSection.classList.add('hidden');
+    resultBody.innerHTML = '';
+
+    console.log("重新加载数据...");
+    await loadInsuranceData(currentProduct);
+
+    setTimeout(() => {
+        console.log("开始数据计算...");
+        const results = calculator.calculateFromRealData(currentAge, currentPaymentYears, currentAnnualPremium, 50);
+        console.log("计算完成，结果显示:", results);
+        
+        if (results && results.length > 0) {
+            console.log("第一行数据样例:", results[0]);
         }
-// 更新日志数据 - 你可以在这里修改内容
+        
+        // 设置表格类名控制列显示
+        const tableContainer = document.querySelector('.table-container');
+        if (tableContainer) {
+            tableContainer.classList.remove('product-forever', 'product-full', 'product-year');
+            tableContainer.classList.add(`product-${currentProduct}`);
+        }
+        
+        displayResults(results);
+        
+        loading.style.display = 'none';
+        resultSection.classList.remove('hidden');
+        console.log("页面更新完成");
+    }, 300);
+}
+      
+// 高亮关键年份配置
+const highlightYearConfig = {
+    'forever': [6, 10, 15, 20, 25, 30, 35, 40,  50],  // 久久：从第6年开始
+    'full': [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],     // 满满：从第5年开始
+    'year': [6, 10, 15, 20, 25, 30, 35, 40, 45, 50]      // 年年：从第6年开始
+};
+
+// 5. 显示结果 - 统一的9列表格
+function displayResults(results) {
+    const resultBody = document.getElementById('resultBody');
+    if (!resultBody) {
+        console.error("未找到resultBody元素");
+        return;
+    }
+    
+    resultBody.innerHTML = '';
+
+    if (!results || results.length === 0) {
+        resultBody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #999;">暂无数据</td></tr>';
+        return;
+    }
+
+    // 设置表格类名，控制列显示/隐藏
+    const tableContainer = document.querySelector('.table-container');
+    if (tableContainer) {
+        // 移除所有产品类名
+        tableContainer.classList.remove('product-forever', 'product-full', 'product-year');
+        // 添加当前产品类名
+        tableContainer.classList.add(`product-${currentProduct}`);
+    }
+
+    // 获取当前险种的高亮年份
+    const highlightYears = highlightYearConfig[currentProduct] || highlightYearConfig.forever;
+    console.log(`🎯 ${currentProduct}险种高亮年份:`, highlightYears);
+
+    results.forEach((item, index) => {
+        const row = document.createElement('tr');
+        
+        // 根据险种高亮不同的年份
+        if (highlightYears.includes(item.year)) {
+            row.classList.add('highlight-year');
+            console.log(`🔴 高亮第${item.year}年`);
+        }
+
+        // 格式化数值显示
+        const formatNumber = (num) => {
+            return num.toLocaleString('zh-CN');
+        };
+
+        // 统一的9列表格结构
+        row.innerHTML = `
+            <td style="text-align: center;">${item.year}</td>
+            <td style="text-align: center;">${item.age}</td>
+            <td style="text-align: right;">${formatNumber(item.yearPremium)}</td>
+            <td style="text-align: right;">${formatNumber(item.accumulatedPremium)}</td>
+            <td style="text-align: right;" class="annuity-column">${formatNumber(item.annuity)}</td>
+            <td style="text-align: right;" class="bonus-column">${formatNumber(item.bonus)}</td>
+            <td style="text-align: right;">${formatNumber(item.cashValue)}</td>
+            <td style="text-align: right;">${formatNumber(item.totalBenefit)}</td>
+            <td style="text-align: right;">${item.growthRate}</td>
+        `;
+        
+        resultBody.appendChild(row);
+    });
+
+    // 更新数据来源说明
+    updateDataSourceNote();
+}
+
+// 更新数据来源说明的函数
+function updateDataSourceNote() {
+    const sourceElement = document.getElementById('dataSourceText');
+    if (sourceElement) {
+        let sourceText = '';
+        switch(currentProduct) {
+            case 'forever': sourceText = '幸福久久全年龄段5年交数据.json'; break;
+            case 'full': sourceText = '幸福满满全年龄段5年交数据.json'; break;
+            case 'year': sourceText = '幸福年年全年龄段5年交数据.json'; break;
+        }
+        sourceElement.textContent = sourceText;
+    }
+}
+
+// 更新日志功能
 const changelogData = [
+    { date: "2025-12-12", content: "V2.0增加满满、年年两个险种" },
     { date: "2025-12-10", content: "V1.5优化表格宽度和颜色" },
     { date: "2025-12-10", content: "V1.4优化界面布局" },
     { date: "2025-12-09", content: "V1.3添加更新日志功能" },
@@ -1098,33 +1057,30 @@ const changelogData = [
     { date: "2025-12-01", content: "V1.1添加5年交完整数据" }
 ];
 
-// 显示更新日志
 function showChangelog() {
     const modal = document.getElementById('changelogModal');
     const list = document.getElementById('changelogList');
     
-    // 清空现有内容
-    list.innerHTML = '';
+    if (!modal || !list) {
+        console.error("未找到更新日志相关元素");
+        return;
+    }
     
-    // 添加更新日志条目
+    list.innerHTML = '';
     changelogData.forEach(item => {
         const li = document.createElement('li');
-        li.innerHTML = `
-            <span class="changelog-date">${item.date}</span>
-            <span class="changelog-content">${item.content}</span>
-        `;
+        li.innerHTML = `<span class="changelog-date">${item.date}</span><span class="changelog-content">${item.content}</span>`;
         list.appendChild(li);
     });
-    
-    // 显示模态框
     modal.classList.remove('hidden');
 }
 
-// 关闭更新日志
 function closeChangelog() {
-    document.getElementById('changelogModal').classList.add('hidden');
+    const modal = document.getElementById('changelogModal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
 }
-
-    </script>
+</script>
 </body>
 </html>
