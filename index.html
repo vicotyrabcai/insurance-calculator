@@ -9,6 +9,25 @@
     <script>window.publicPath = "https://gw.alipayobjects.com/render/p/yuyan/180023180006000310/";</script>
     <script defer src="https://cdn.tailwindcss.com"></script>
     <style>
+
+/* 只在手机端隐藏年龄和累计保费列 */
+@media (max-width: 768px) {
+    .result-table th:nth-child(2),
+    .result-table td:nth-child(2),  /* 年龄列 */
+    .result-table th:nth-child(4),
+    .result-table td:nth-child(4) {  /* 累计保费列 */
+        display: none;
+    }
+    
+    /* 调整手机端其他列的宽度 */
+    .result-table th,
+    .result-table td {
+        min-width: auto !important;
+        padding: 4px 6px;
+        font-size: 11px;
+    }
+}
+
 /* 交费期间按钮数据可用性指示点 */
 .payment-button .absolute {
     pointer-events: none;
@@ -762,7 +781,7 @@ async function loadInsuranceData(productType = currentProduct, paymentYears = cu
         return insuranceDatabase;
     } catch (error) {
         console.error('❌ 加载或解析TXT数据失败:', error);
-        alert(`数据加载失败: ${error.message}\n请检查TXT文件路径和格式是否正确。`);
+        alert(`数据加载失败: ${error.message}\n未找到数据。`);
         return null;
     }
 }
