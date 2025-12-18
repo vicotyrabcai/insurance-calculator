@@ -9,6 +9,16 @@
     <script>window.publicPath = "https://gw.alipayobjects.com/render/p/yuyan/180023180006000310/";</script>
     <script defer src="https://cdn.tailwindcss.com"></script>
     <style>
+/* 交费期间按钮数据可用性指示点 */
+.payment-button .absolute {
+    pointer-events: none;
+}
+
+/* 数据可用性颜色编码 */
+.bg-green-500 { background-color: #10b981; } /* 数据完整 */
+.bg-yellow-500 { background-color: #f59e0b; } /* 数据部分 */
+.bg-gray-400 { background-color: #9ca3af; } /* 数据暂缺 */
+
 /* 列显示/隐藏控制 */
 .annuity-column, .bonus-column {
     display: table-cell;
@@ -483,7 +493,7 @@
         <div class="p-4">
             <!-- 修改标题为两行居中 -->
             <h1 class="page-title">
-                <span class="title-line-1">利益演示表<a href="javascript:void(0)" id="versionLink" class="version-link">V2.0</a></span>
+                <span class="title-line-1">利益演示表<a href="javascript:void(0)" id="versionLink" class="version-link">V2.2</a></span>
                 <span class="title-line-2">仅限内部学习交流，禁止外传</span>
             </h1>
 
@@ -537,23 +547,27 @@
     </div>
 </div>
 
-            <!-- 交费期间 - 一行显示，铺满整行 -->
+<!-- 交费期间选择 - 添加数据可用性指示 -->
 <div class="mb-4 flex items-center">
     <label class="text-sm font-medium text-gray-700 mr-3 whitespace-nowrap" style="min-width: 60px;">
         <span class="material-icons text-sm mr-1" style="color: #666;">schedule</span>交费期间
     </label>
     <div class="flex gap-2 flex-1">
-        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center" data-payment="3">
+        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center relative" data-payment="3" title="3年交数据（暂未收录）">
             3年
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-gray-400 rounded-full" title="数据暂未收录"></span>
         </button>
-        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center" data-payment="4">
+        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center relative" data-payment="4" title="4年交数据（暂未收录）">
             4年
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-gray-400 rounded-full" title="数据暂未收录"></span>
         </button>
-        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer active flex-1 text-center" data-payment="5">
+        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer active flex-1 text-center relative" data-payment="5" title="5年交数据（完整收录）">
             5年
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full" title="数据完整收录"></span>
         </button>
-        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center" data-payment="10">
-            10年
+        <button class="payment-button flex items-center justify-center py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all cursor-pointer flex-1 text-center relative" data-payment="6" title="6年交数据（暂未收录）">
+            6年
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-gray-400 rounded-full" title="数据暂未收录"></span>
         </button>
     </div>
 </div>
@@ -575,8 +589,8 @@
                     <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all active" data-premium="100000" data-testid="premium-100000">
                         10万
                     </button>
-                    <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-premium="1000000" data-testid="premium-1000000">
-                        100万
+                    <button class="premium-button py-2 px-3 rounded-lg border border-gray-300 text-sm font-medium transition-all" data-premium="500000" data-testid="premium-500000">
+                        50万
                     </button>
                 </div>
                 
@@ -611,15 +625,15 @@
         <table class="result-table">
             <thead>
                 <tr>
-                    <th style="width: 35px; min-width: 30px;">年度</th>
-                    <th style="width: 35px; min-width: 30px;">年龄</th>
+                    <th style="width: 35px; min-width: 30px;">年<br>度</th>
+                    <th style="width: 35px; min-width: 30px;">年<br>龄</th>
                     <th style="width: 65px; min-width: 60px;">年交保费</th>
                     <th style="width: 65px; min-width: 60px;">累计保费</th>
                     <th style="width 75px; min-width: 60px;" class="annuity-column">年金</th>
                     <th style="width: 75px; min-width: 60px;" class="bonus-column">累计红利</th>
                     <th style="width: 75px; min-width: 60px;">现金价值</th>
-                    <th style="width: 85px; min-width: 60px;">生存总利益</th>
-                    <th style="width: 55px; min-width: 50px;">年增长率</th>
+                    <th style="width: 85px; min-width: 60px;">生存<br>总利益</th>
+                    <th style="width: 55px; min-width: 50px;">年增<br>长率</th>
                 </tr>
             </thead>
             <tbody id="resultBody">
@@ -637,7 +651,7 @@
         </button>
     </div>
 
-    <div class="data-source">✅ 数据来源：<span id="dataSourceText">幸福久久全年龄段5年交数据.json</span></div>
+    <div class="data-source">✅ 数据来源：<span id="dataSourceText">json数据库</span></div>
 </div>
         </div>
     </div>
@@ -675,42 +689,80 @@
         'year': ['年度', '年龄', '年交保费', '累计保费', '养老年金', '现金价值', '累计红利', '生存总利益', '年增长率']
     };
 
-// 1. 加载数据函数
-async function loadInsuranceData(productType = currentProduct) {
+// 1. 加载数据函数 - 修改为读取TXT文件
+async function loadInsuranceData(productType = currentProduct, paymentYears = currentPaymentYears) {
     try {
-        let dataFile = '';
-        switch(productType) {
-            case 'forever': dataFile = 'index_files/幸福久久全年龄段5年交数据.json'; break;
-            case 'full': dataFile = 'index_files/幸福满满全年龄段5年交数据.json'; break;
-            case 'year': dataFile = 'index_files/幸福年年全年龄段5年交数据.json'; break;
-            default: dataFile = 'index_files/幸福久久全年龄段5年交数据.json';
+        // 根据险种和交费期间构建TXT文件名
+        const productNameMap = {
+            'forever': '幸福久久',
+            'full': '幸福满满', 
+            'year': '幸福年年'
+        };
+        // 修改1：文件扩展名改为 .txt
+        const fileName = `${productNameMap[productType]}_现金价值表_${paymentYears}年交.txt`;
+        // 修改2：确认TXT文件存放的路径，例如在 index_files/data/ 目录下
+        const dataFile = `index_files/data/${fileName}`; 
+        
+        console.log(`正在加载TXT数据文件: ${dataFile}`);
+        const response = await fetch(dataFile);
+        if (!response.ok) {
+            throw new Error(`TXT文件未找到: ${fileName}`);
         }
         
-        console.log(`正在加载数据文件: ${dataFile}`);
-        const response = await fetch(dataFile);
-        if (!response.ok) throw new Error(`文件未找到: ${dataFile}`);
+        // 修改3：获取响应文本而非JSON
+        const textData = await response.text();
+        console.log("TXT文件加载成功，开始解析...");
         
-        insuranceDatabase = await response.json();
-        console.log(`✅ ${productType}数据加载成功`);
+        // 清空之前的数据库
+        insuranceDatabase = {};
 
-        // 调试信息：显示数据结构
-        console.log(`📊 ${productType}数据库键名:`, Object.keys(insuranceDatabase));
-        if (Object.keys(insuranceDatabase).length > 0) {
-            const sampleKey = Object.keys(insuranceDatabase)[0];
-            console.log(`📋 ${productType}样本数据:`, insuranceDatabase[sampleKey]);
-            if (insuranceDatabase[sampleKey].benefit_data) {
-if (insuranceDatabase[sampleKey].benefit_data && insuranceDatabase[sampleKey].benefit_data.length > 0) {
-    console.log(`🔍 第一年数据字段:`, Object.keys(insuranceDatabase[sampleKey].benefit_data[0]));
-} else {
-    console.log(`⚠️  benefit_data为空或不存在`);
-}
+        // 修改4：核心解析逻辑 - 将文本按行分割并处理
+        const lines = textData.split('\n');
+        
+        for (const line of lines) {
+            // 跳过空行和注释行（如果存在）
+            if (line.trim() === '' || line.startsWith('//')) {
+                continue;
+            }
+            
+            // 修改5：按逗号分割每一行数据
+            const fields = line.split(',');
+            // 确保有9个字段（根据您的格式）
+            if (fields.length === 9) {
+                const gender = fields[0].trim();
+                const applicationAge = fields[1].trim(); // 投保年龄
+                
+                // 修改6：构建唯一键，格式如 "男_0"
+                const dataKey = `${gender}_${applicationAge}`;
+                
+                // 如果这个键还不存在，初始化其数据结构
+                if (!insuranceDatabase[dataKey]) {
+                    insuranceDatabase[dataKey] = {
+                        benefit_data: [] // 保持与原JSON一致的结构
+                    };
+                }
+                
+                // 修改7：将当前行数据转换为对象，并存入 benefit_data 数组
+                // 注意：字段顺序需与您的TXT文件完全一致
+                insuranceDatabase[dataKey].benefit_data.push({
+                    "保单年度": parseFloat(fields[2]) || 0,
+                    "年龄": parseFloat(fields[3]) || 0,
+                    "年交保费": parseFloat(fields[4]) || 0,
+                    "累计保费": parseFloat(fields[5]) || 0,
+                    "年金": parseFloat(fields[6]) || 0,
+                    "累计红利": parseFloat(fields[7]) || 0,
+                    "现金价值": parseFloat(fields[8]) || 0
+                });
             }
         }
 
+        console.log(`✅ ${productType}_${paymentYears}年交TXT数据解析完成`);
+        console.log(`📊 解析后数据库样例:`, Object.keys(insuranceDatabase).length > 0 ? Object.keys(insuranceDatabase)[0] : "无数据");
+        
         return insuranceDatabase;
     } catch (error) {
-        console.error('❌ 数据加载失败:', error);
-        alert(`数据加载失败: ${error.message}`);
+        console.error('❌ 加载或解析TXT数据失败:', error);
+        alert(`数据加载失败: ${error.message}\n请检查TXT文件路径和格式是否正确。`);
         return null;
     }
 }
@@ -726,18 +778,18 @@ class InsuranceCalculator {
         const genderChinese = currentGender === 'female' ? '女' : '男';
         const ageKey = `${genderChinese}_${age}`;
         
-        console.log(`🔍 查找数据键: ${ageKey}`);
+        console.log(`🔍🔍 查找数据键: ${ageKey}`);
         
         if (!insuranceDatabase[ageKey]) {
             alert(`未找到${genderChinese}性${age}岁的数据`);
-            console.log(`❌ 可用键名:`, Object.keys(insuranceDatabase));
+            console.log(`❌❌ 可用键名:`, Object.keys(insuranceDatabase));
             return [];
         }
 
         const ageData = insuranceDatabase[ageKey];
         const benefitData = ageData.benefit_data || [];
         
-        console.log(`📈 找到${benefitData.length}年数据`);
+        console.log(`📈📈 找到${benefitData.length}年数据`);
         
         if (benefitData.length === 0) {
             alert("该年龄段无数据");
@@ -748,67 +800,67 @@ class InsuranceCalculator {
         let previousTotalBenefit = 0;
         let totalAnnuityReceived = 0;
 
-for (let year = 1; year <= totalYears && year <= benefitData.length; year++) {
-    const realYearData = benefitData[year - 1];
-    
-    if (!realYearData) {
-        console.log(`⏹️ 第${year}年无数据，停止计算`);
-        break;
-    }
-
-    // 从JSON获取基础数据
-    const yearPremium = year <= paymentYears ? annualPremium : 0;
-    const accumulatedPremium = annualPremium * Math.min(year, paymentYears);
-    
-    // 统一字段名
-    const annuity = Math.round((realYearData.年金 || 0) * (annualPremium / 10000));
-    const bonus = Math.round((realYearData.累计红利 || 0) * (annualPremium / 10000));
-    const cashValue = Math.round((realYearData.现金价值 || 0) * (annualPremium / 10000));
-    
-    // 计算生存总利益
-    totalAnnuityReceived += annuity;
-    const totalBenefit = cashValue + bonus + totalAnnuityReceived;
-
-    // 修正：只有第6年及以后才计算增长率
-    let growthRate = "-";
-    if (year >= 6 && previousTotalBenefit > 0) {
-        const profit = totalBenefit - previousTotalBenefit;
-        if (accumulatedPremium > 0) {
-            const rate = (profit / accumulatedPremium) * 100;
-            growthRate = rate.toFixed(2) + "%";
+        for (let year = 1; year <= totalYears && year <= benefitData.length; year++) {
+            const realYearData = benefitData[year - 1];
             
-            console.log(`📈 第${year}年增长率计算:`, {
-                当年生存总利益: totalBenefit,
-                上年生存总利益: previousTotalBenefit,
-                收益差额: profit,
-                累计保费: accumulatedPremium,
-                收益率: growthRate
+            if (!realYearData) {
+                console.log(`⏹⏹⏹️ 第${year}年无数据，停止计算`);
+                break;
+            }
+
+            // 从JSON获取基础数据
+            const yearPremium = year <= paymentYears ? annualPremium : 0;
+            const accumulatedPremium = annualPremium * Math.min(year, paymentYears);
+            
+            // 统一字段名
+            const annuity = Math.round((realYearData.年金 || 0) * (annualPremium / 10000));
+            const bonus = Math.round((realYearData.累计红利 || 0) * (annualPremium / 10000));
+            const cashValue = Math.round((realYearData.现金价值 || 0) * (annualPremium / 10000));
+            
+            // 计算生存总利益
+            totalAnnuityReceived += annuity;
+            const totalBenefit = cashValue + bonus + totalAnnuityReceived;
+
+            // 修正：只有第6年及以后才计算增长率
+            let growthRate = "-";
+            if (year >= 6 && previousTotalBenefit > 0) {
+                const profit = totalBenefit - previousTotalBenefit;
+                if (accumulatedPremium > 0) {
+                    const rate = (profit / accumulatedPremium) * 100;
+                    growthRate = rate.toFixed(2) + "%";
+                    
+                    console.log(`📈📈 第${year}年增长率计算:`, {
+                        当年生存总利益: totalBenefit,
+                        上年生存总利益: previousTotalBenefit,
+                        收益差额: profit,
+                        累计保费: accumulatedPremium,
+                        收益率: growthRate
+                    });
+                }
+            }
+            
+            // 关键修改：必须在保存结果前更新previousTotalBenefit
+            previousTotalBenefit = totalBenefit;
+
+            results.push({
+                year: year,
+                age: age + year - 1,
+                yearPremium: yearPremium,
+                accumulatedPremium: accumulatedPremium,
+                annuity: annuity,
+                bonus: bonus,
+                cashValue: cashValue,
+                totalBenefit: totalBenefit,
+                growthRate: growthRate,
+                totalAnnuityReceived: totalAnnuityReceived
+            });
+            
+            console.log(`📊📊 第${year}年数据:`, {
+                年增长率: growthRate,
+                生存总利益: totalBenefit,
+                上一年生存总利益: previousTotalBenefit
             });
         }
-    }
-    
-    // 关键修改：必须在保存结果前更新previousTotalBenefit
-    previousTotalBenefit = totalBenefit;  // 这行必须在push之前
-
-    results.push({
-        year: year,
-        age: age + year - 1,
-        yearPremium: yearPremium,
-        accumulatedPremium: accumulatedPremium,
-        annuity: annuity,
-        bonus: bonus,
-        cashValue: cashValue,
-        totalBenefit: totalBenefit,
-        growthRate: growthRate,
-        totalAnnuityReceived: totalAnnuityReceived
-    });
-    
-    console.log(`📊 第${year}年数据:`, {
-        年增长率: growthRate,
-        生存总利益: totalBenefit,
-        上一年生存总利益: previousTotalBenefit
-    });
-}
 
         console.log(`✅ 计算完成，共${results.length}年数据`);
         return results;
@@ -851,15 +903,25 @@ for (let year = 1; year <= totalYears && year <= benefitData.length; year++) {
             });
         });
 
-        // 绑定交费期间按钮事件
-        document.querySelectorAll('.payment-button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.payment-button').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentPaymentYears = parseInt(this.dataset.payment);
-                console.log("交费期间改为:", currentPaymentYears);
-            });
-        });
+// 绑定交费期间按钮事件 - 支持动态数据加载
+document.querySelectorAll('.payment-button').forEach(btn => {
+    btn.addEventListener('click', async function() {
+        const selectedPaymentYears = parseInt(this.dataset.payment);
+        
+        // 更新UI状态
+        document.querySelectorAll('.payment-button').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentPaymentYears = selectedPaymentYears;
+        
+        console.log("交费期间改为:", currentPaymentYears, "年交");
+        
+        // 立即尝试加载对应数据
+        await loadInsuranceData(currentProduct, currentPaymentYears);
+        
+        // 重新计算利益
+        calculateBenefits();
+    });
+});
 
         // 绑定保费按钮事件
         document.querySelectorAll('.premium-button').forEach(btn => {
@@ -884,15 +946,16 @@ for (let year = 1; year <= totalYears && year <= benefitData.length; year++) {
             });
         }
 
-// 绑定险种切换
+// 绑定险种切换 - 支持动态数据加载
 document.querySelectorAll('.product-button').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', async function() {
         document.querySelectorAll('.product-button').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         currentProduct = this.dataset.product;
         console.log("险种改为:", currentProduct);
         
-        // 重新加载数据并计算
+        // 重新加载对应数据并计算
+        await loadInsuranceData(currentProduct, currentPaymentYears);
         calculateBenefits();
     });
 });
@@ -923,9 +986,9 @@ async function calculateBenefits() {
     console.log("开始计算利益...");
     console.log("当前参数:", {
         险种: currentProduct,
+        交费期间: `${currentPaymentYears}年交`,
         性别: currentGender,
         年龄: currentAge,
-        交费期间: currentPaymentYears,
         年交保费: currentAnnualPremium
     });
     
@@ -937,17 +1000,37 @@ async function calculateBenefits() {
     resultSection.classList.add('hidden');
     resultBody.innerHTML = '';
 
-    console.log("重新加载数据...");
-    await loadInsuranceData(currentProduct);
+    // 基本参数验证
+    if (currentAnnualPremium <= 0) {
+        alert("❌ 年交保费必须大于0");
+        loading.style.display = 'none';
+        return;
+    }
+    
+    if (currentAge < 0 || currentAge > 80) {
+        alert("❌ 投保年龄必须在0-80岁之间");
+        loading.style.display = 'none';
+        return;
+    }
+
+    console.log("智能加载数据...");
+    const loadSuccess = await loadInsuranceData(currentProduct, currentPaymentYears);
+    
+    if (!loadSuccess) {
+        loading.style.display = 'none';
+        return;
+    }
 
     setTimeout(() => {
         console.log("开始数据计算...");
         const results = calculator.calculateFromRealData(currentAge, currentPaymentYears, currentAnnualPremium, 50);
-        console.log("计算完成，结果显示:", results);
         
-        if (results && results.length > 0) {
-            console.log("第一行数据样例:", results[0]);
+        if (!results || results.length === 0) {
+            loading.style.display = 'none';
+            return;
         }
+        
+        console.log(`✅ 计算完成，共${results.length}年数据`);
         
         // 设置表格类名控制列显示
         const tableContainer = document.querySelector('.table-container');
@@ -1039,9 +1122,9 @@ function updateDataSourceNote() {
     if (sourceElement) {
         let sourceText = '';
         switch(currentProduct) {
-            case 'forever': sourceText = '幸福久久全年龄段5年交数据.json'; break;
-            case 'full': sourceText = '幸福满满全年龄段5年交数据.json'; break;
-            case 'year': sourceText = '幸福年年全年龄段5年交数据.json'; break;
+            case 'forever': sourceText = '幸福久久_现金价值表'; break; // 修改示例
+            case 'full': sourceText = '幸福满满_现金价值表'; break; // 修改示例
+            case 'year': sourceText = '幸福年年_现金价值表'; break; // 修改示例
         }
         sourceElement.textContent = sourceText;
     }
@@ -1049,6 +1132,8 @@ function updateDataSourceNote() {
 
 // 更新日志功能
 const changelogData = [
+    { date: "2025-12-18", content: "V2.2久久、满满3、4、5、6年交数据补全。TXT格式" },
+    { date: "2025-12-15", content: "V2.1增加满满3、4年交数据" },
     { date: "2025-12-12", content: "V2.0增加满满、年年两个险种" },
     { date: "2025-12-10", content: "V1.5优化表格宽度和颜色" },
     { date: "2025-12-10", content: "V1.4优化界面布局" },
